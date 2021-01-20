@@ -1,0 +1,307 @@
+package com.nls.myrewards;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.nls.myrewards.client.HttpClient;
+
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * MyRewards SDK entry point
+ */
+public final class MyRewards {
+    private final HttpClient client;
+
+    private MyRewards(MyRewardsConfiguration configuration) {
+        this.client = new HttpClient(configuration);
+    }
+
+    /**
+     * Get a MyRewards instance for your given api key.
+     *
+     * @param apiKey your client id
+     * @return a MyRewards instance
+     */
+    public static MyRewards make(String apiKey) {
+        return new MyRewards(new MyRewardsConfiguration()
+                .withApiKey(apiKey));
+    }
+
+    /**
+     * Get a MyRewards instance using finer grained control over configuration.
+     *
+     * @param configuration your configuration
+     * @return a MyRewards instance
+     */
+    public static MyRewards make(MyRewardsConfiguration configuration) {
+        return new MyRewards(configuration);
+    }
+
+    /**
+     * Permissions are used to grant access to administrative and reporting areas of the programme. They are also
+     * used to manage user access and ordering rights
+     *
+     * @return all permissions for the current stack
+     */
+    public List<MyRewardsPermission> getPermissions() {
+        return client.get("/api/v2/permissions", null, new TypeReference<List<MyRewardsPermission>>() {});
+    }
+
+    /**
+     * A simple endpoint will be created to fetch registration_questions for this programme (Again scoped by API key).
+     * This is potentially optional as a list of registration_question_ids could be provided, although this list will
+     * have to be managed and maintained carefully. Should any new mandatory fields be added to this list, it would
+     * require development on the client side of the API unless this list can be dynamically consulted via the api.
+     *
+     * @return a list of registration questions
+     */
+    public List<MyRewardsRegistrationQuestion> getRegistrationQuestions() {
+        return client.get("/api/v2/registration_questions", null, new TypeReference<List<MyRewardsRegistrationQuestion>>() {});
+    }
+
+    /**
+     * An endpoint to fetch the list of values associated with a registration question. Returns an array of values
+     * with their name and id.
+     *
+     * @param questionId the question id
+     * @return a list of values for the question
+     */
+    public List<MyRewardsRegistrationQuestionValue> getRegistrationQuestionValues(int questionId) {
+        return client.get(
+                String.format("/api/v2/registration_questions/%d/list_of_values", questionId),
+                null,
+                new TypeReference<List<MyRewardsRegistrationQuestionValue>>() {});
+    }
+
+    /**
+     * An endpoint to create a new list value for a registration question. On completion, returns an array of all
+     * values with their name and id.
+     *
+     * @param questionId the question id
+     * @param name the name of the new list value
+     * @return a list of values for the question
+     */
+    public List<MyRewardsRegistrationQuestionValue> createRegistrationQuestionValues(int questionId, String name) {
+        return client.post(
+                String.format("/api/v2/registration_questions/%d/list_of_values", questionId),
+                Collections.singletonMap("name", name),
+                new TypeReference<List<MyRewardsRegistrationQuestionValue>>() {});
+    }
+
+    /**
+     * This endpoint creates a new site message for a user.
+     *
+     * Site message are either plain text or HTML messages that appear in a User's message page. When a user logs in
+     * they are notified of any unread messages via a pop-up (usually in the bottom right corner)
+     * @param userId the ID of the user who will receive the message
+     * @param content the content of message
+     * @return the site message
+     */
+    public MyRewardsSiteMessage createSiteMessage(int userId, String content) {
+        return client.post(
+                String.format("/api/v2/users/%d/site_messages", userId),
+                Collections.singletonMap("content", content),
+                MyRewardsSiteMessage.class);
+    }
+
+    /**
+     * This endpoint retrieves a specific site message.
+     *
+     * Site message are either plain text or HTML messages that appear in a User's message page. When a user logs in
+     * they are notified of any unread messages via a pop-up (usually in the bottom right corner)
+     *
+     * @param userId the ID of the user who will receive the message
+     * @param messageId the ID of the site message to retrieve
+     * @return the site message
+     */
+    public MyRewardsSiteMessage getSiteMessage(int userId, int messageId) {
+        return client.get(
+                String.format("/api/v2/users/%d/site_messages/%d", userId, messageId),
+                null,
+                MyRewardsSiteMessage.class);
+    }
+
+    /**
+     * This endpoint retrieves all site messages for a user.
+     *
+     * Site message are either plain text or HTML messages that appear in a User's message page. When a user logs in
+     * they are notified of any unread messages via a pop-up (usually in the bottom right corner)
+     *
+     * @param userId the ID of the user who will receive the message
+     * @return the site message
+     */
+    public List<MyRewardsSiteMessage> getSiteMessages(int userId) {
+        return client.get(
+                String.format("/api/v2/users/%d/site_messages", userId),
+                null,
+                new TypeReference<List<MyRewardsSiteMessage>>() {});
+    }
+
+    /**
+     * This endpoint is designed to list all of a user’s transactions in json format. The points transactions will
+     * be debits and credits with a description field.
+     *
+     * All transactions listed in the response will be ordered so as to have the most recent transaction last in
+     * the list.
+     *
+     * Please remember that if a user transaction is performed on the MyRewards 2.0 platform since a request is made
+     * over the api – this balance will be out of date.
+     *
+     * On the server side a check will be made that the user_id you are requesting is
+     *
+     * <ul>
+     *     <li>a valid user</li>
+     *      <li>it is a user for the programme that your api key is scoped to.</li>
+     * </ul>
+     * That is to say that you can only retrieve transactions for users of your MyRewards Programme.
+     *
+     * The remote_transaction_id is documented in the POST endpoint for creating transactions, this value is optional,
+     * therefore can be null
+     *
+     * @param userId the ID of the user
+     * @return a list of transactions for the user
+     */
+    public List<MyRewardsTransaction> getTransactions(int userId) {
+        return client.get(
+                String.format("/api/v2/users/%d/transactions", userId),
+                null,
+                new TypeReference<List<MyRewardsTransaction>>() {});
+    }
+
+    /**
+     * This endpoint is designed to show the latest transaction for the given user in json format. You can use this
+     * endpoint to find the user's current balance.
+     *
+     * Please remember that if a user transaction is performed on the MyRewards 2.0 platform since a request is made
+     * over the api – this balance will be out of date.
+     *
+     * On the server side a check will be made that the user_id you are requesting is
+     *
+     * <ul>
+     *     <li>a valid user</li>
+     *      <li>it is a user for the programme that your api key is scoped to.</li>
+     * </ul>
+     * That is to say that you can only retrieve transactions for users of your MyRewards Programme.
+     *
+     * The remote_transaction_id is documented in the POST endpoint for creating transactions, this value is optional,
+     * therefore can be null
+     *
+     * @param userId the ID of the user
+     * @return a list of transactions for the user
+     */
+    public MyRewardsTransaction getLastTransactions(int userId) {
+        return client.get(
+                String.format("/api/v2/users/%d/transactions/last", userId),
+                null,
+                MyRewardsTransaction.class);
+    }
+
+    /**
+     * A simple endpoint to fetch a list of user groups used for this programme. Only accessible if the key has been
+     * granted access to users. Returns an array of user_groups as a flat list, each user group will indicate it's
+     * parent id enabling the client end of the API to re-construct the user group hierarchy. This would be required
+     * if a registration_question is linked to a tier of user_groups with a tier being a vertical 'slice' down the
+     * hierarchy.
+     *
+     * @return the list of user groups
+     */
+    public List<MyRewardsUserGroup> getUserGroups() {
+        return client.get(
+                "/api/v2/user_groups",
+                null,
+                new TypeReference<List<MyRewardsUserGroup>>() {});
+    }
+
+    /**
+     * An endpoint to create a user group for this programme. Only accessible if the key has been granted access to
+     * users. In order to create a usergroup a name is required. This usergroup can be nested underneath another user
+     * group by passing the parent user group id. Images can be uploaded to the user group by passing a publicly
+     * accessible image url. If no position is passed then it will default to the bottom of the hierachy.
+     *
+     * @return the list of user groups
+     */
+    public MyRewardsUserGroup createUserGroup(MyRewardsUserGroupRequest request) {
+        return client.post(
+                "/api/v2/user_groups",
+                request,
+                MyRewardsUserGroup.class);
+    }
+
+    /**
+     * An endpoint to fetch a list of permissions for a given user_group. Returns an array of permissions with each
+     * permission displaying its parent permission group name. This is to help identify different permissions when
+     * names are the same across separate groups. It will also display whether the permission is active for a given
+     * user_group.
+     *
+     * @return the list of user group permissions
+     */
+    public List<MyRewardsUserGroupPermission> getUserGroupPermissions(int userGroupId) {
+        return client.get(
+                String.format("/api/v2/user_groups/%d/permissions", userGroupId),
+                null,
+                MyRewardsUserGroupPermission.ListWrapper.class).getPermissions();
+    }
+
+    /**
+     * An endpoint to update the permissions associated with a give user_group. After querying for the list of
+     * permissions associated with a given user_group, you can add or remove a permission by simply changing the
+     * value associated with the active key from true to false or vice-versa. You will be returned the updated
+     * list of permissions relative to the given user_group
+     *
+     * N.B. If updating a permission where the permission_group is not active the change will be ignored
+     *
+     * @param userGroupId the group id
+     * @param request the list of permissions to update
+     * @return the updated permissions
+     */
+    public List<MyRewardsUserGroupPermission> getUserGroupPermissions(int userGroupId, List<MyRewardsUserGroupPermission> request) {
+        return client.patch(
+                String.format("/api/v2/user_groups/%d/permissions", userGroupId),
+                new MyRewardsUserGroupPermission.ListWrapper(request),
+                MyRewardsUserGroupPermission.ListWrapper.class).getPermissions();
+    }
+
+    /**
+     * In order to create a user account on the MyRewards 2.0 platform there is often some information about the user
+     * we are creating that needs to be known before the account can be successfully created.
+     *
+     * Firstly, the user group that the user will be created as a member of must be known, we provide an endpoint to
+     * query the usergroups for your programme and if necessary to reconstruct the hierarchy for the usergroups see
+     * the usergroups section.
+     *
+     * Additionally, user accounts can have extra data required over and above the minimal default fields for a user
+     * account. Typically, these take the form of employee data, membership number etc and can be defined as part of
+     * your programme. These extra data are called registration_questions, for more information please see the
+     * registration_questions section.
+     *
+     * Telephone and mobile number fields must be supplied in international format, meaning starting with a '+'
+     * followed by the international country code (I.e. the UK is 44) followed by at least 8 numeric characters.
+     *
+     * Answers to the registration questions are provided in an array of objects, nested under the key
+     * registration_answers_attributes. The nested objects themselves must have the keys registration_question_id
+     * and answer.
+     *
+     * @param request the new user attributes
+     * @return the created user
+     */
+    public MyRewardsUser createUser(MyRewardsUserRequest request) {
+        return client.post(
+                "/api/v2/users",
+                request,
+                MyRewardsUser.class);
+    }
+
+    /**
+     * The update user api is available to update user information.
+     *
+     * @param userId the id of the user to update
+     * @param request the changed user attributes
+     * @return the updated user
+     */
+    public MyRewardsUser updateUser(int userId, MyRewardsUserRequest request) {
+        return client.patch(
+                String.format("/api/v2/users/%d", userId),
+                request,
+                MyRewardsUser.class);
+    }
+}
