@@ -44,7 +44,8 @@ public final class MyRewards {
      * @return all permissions for the current stack
      */
     public List<MyRewardsPermission> getPermissions() {
-        return client.get("/api/v2/permissions", null, new TypeReference<List<MyRewardsPermission>>() {});
+        return client.get("/api/v2/permissions", null, new TypeReference<List<MyRewardsPermission>>() {
+        });
     }
 
     /**
@@ -56,7 +57,8 @@ public final class MyRewards {
      * @return a list of registration questions
      */
     public List<MyRewardsRegistrationQuestion> getRegistrationQuestions() {
-        return client.get("/api/v2/registration_questions", null, new TypeReference<List<MyRewardsRegistrationQuestion>>() {});
+        return client.get("/api/v2/registration_questions", null, new TypeReference<List<MyRewardsRegistrationQuestion>>() {
+        });
     }
 
     /**
@@ -70,7 +72,8 @@ public final class MyRewards {
         return client.get(
                 String.format("/api/v2/registration_questions/%d/list_of_values", questionId),
                 null,
-                new TypeReference<List<MyRewardsRegistrationQuestionValue>>() {});
+                new TypeReference<List<MyRewardsRegistrationQuestionValue>>() {
+                });
     }
 
     /**
@@ -78,22 +81,24 @@ public final class MyRewards {
      * values with their name and id.
      *
      * @param questionId the question id
-     * @param name the name of the new list value
+     * @param name       the name of the new list value
      * @return a list of values for the question
      */
     public List<MyRewardsRegistrationQuestionValue> createRegistrationQuestionValues(int questionId, String name) {
         return client.post(
                 String.format("/api/v2/registration_questions/%d/list_of_values", questionId),
                 Collections.singletonMap("name", name),
-                new TypeReference<List<MyRewardsRegistrationQuestionValue>>() {});
+                new TypeReference<List<MyRewardsRegistrationQuestionValue>>() {
+                });
     }
 
     /**
      * This endpoint creates a new site message for a user.
-     *
+     * <p>
      * Site message are either plain text or HTML messages that appear in a User's message page. When a user logs in
      * they are notified of any unread messages via a pop-up (usually in the bottom right corner)
-     * @param userId the ID of the user who will receive the message
+     *
+     * @param userId  the ID of the user who will receive the message
      * @param content the content of message
      * @return the site message
      */
@@ -106,11 +111,11 @@ public final class MyRewards {
 
     /**
      * This endpoint retrieves a specific site message.
-     *
+     * <p>
      * Site message are either plain text or HTML messages that appear in a User's message page. When a user logs in
      * they are notified of any unread messages via a pop-up (usually in the bottom right corner)
      *
-     * @param userId the ID of the user who will receive the message
+     * @param userId    the ID of the user who will receive the message
      * @param messageId the ID of the site message to retrieve
      * @return the site message
      */
@@ -123,7 +128,7 @@ public final class MyRewards {
 
     /**
      * This endpoint retrieves all site messages for a user.
-     *
+     * <p>
      * Site message are either plain text or HTML messages that appear in a User's message page. When a user logs in
      * they are notified of any unread messages via a pop-up (usually in the bottom right corner)
      *
@@ -134,19 +139,20 @@ public final class MyRewards {
         return client.get(
                 String.format("/api/v2/users/%d/site_messages", userId),
                 null,
-                new TypeReference<List<MyRewardsSiteMessage>>() {});
+                new TypeReference<List<MyRewardsSiteMessage>>() {
+                });
     }
 
     /**
      * This endpoint is designed to list all of a user’s transactions in json format. The points transactions will
      * be debits and credits with a description field.
-     *
+     * <p>
      * All transactions listed in the response will be ordered so as to have the most recent transaction last in
      * the list.
-     *
+     * <p>
      * Please remember that if a user transaction is performed on the MyRewards 2.0 platform since a request is made
      * over the api – this balance will be out of date.
-     *
+     * <p>
      * On the server side a check will be made that the user_id you are requesting is
      *
      * <ul>
@@ -154,7 +160,7 @@ public final class MyRewards {
      *      <li>it is a user for the programme that your api key is scoped to.</li>
      * </ul>
      * That is to say that you can only retrieve transactions for users of your MyRewards Programme.
-     *
+     * <p>
      * The remote_transaction_id is documented in the POST endpoint for creating transactions, this value is optional,
      * therefore can be null
      *
@@ -165,16 +171,17 @@ public final class MyRewards {
         return client.get(
                 String.format("/api/v2/users/%d/transactions", userId),
                 null,
-                new TypeReference<List<MyRewardsTransaction>>() {});
+                new TypeReference<List<MyRewardsTransaction>>() {
+                });
     }
 
     /**
      * This endpoint is designed to show the latest transaction for the given user in json format. You can use this
      * endpoint to find the user's current balance.
-     *
+     * <p>
      * Please remember that if a user transaction is performed on the MyRewards 2.0 platform since a request is made
      * over the api – this balance will be out of date.
-     *
+     * <p>
      * On the server side a check will be made that the user_id you are requesting is
      *
      * <ul>
@@ -182,7 +189,7 @@ public final class MyRewards {
      *      <li>it is a user for the programme that your api key is scoped to.</li>
      * </ul>
      * That is to say that you can only retrieve transactions for users of your MyRewards Programme.
-     *
+     * <p>
      * The remote_transaction_id is documented in the POST endpoint for creating transactions, this value is optional,
      * therefore can be null
      *
@@ -209,7 +216,8 @@ public final class MyRewards {
         return client.get(
                 "/api/v2/user_groups",
                 null,
-                new TypeReference<List<MyRewardsUserGroup>>() {});
+                new TypeReference<List<MyRewardsUserGroup>>() {
+                });
     }
 
     /**
@@ -247,11 +255,11 @@ public final class MyRewards {
      * permissions associated with a given user_group, you can add or remove a permission by simply changing the
      * value associated with the active key from true to false or vice-versa. You will be returned the updated
      * list of permissions relative to the given user_group
-     *
+     * <p>
      * N.B. If updating a permission where the permission_group is not active the change will be ignored
      *
      * @param userGroupId the group id
-     * @param request the list of permissions to update
+     * @param request     the list of permissions to update
      * @return the updated permissions
      */
     public List<MyRewardsUserGroupPermission> getUserGroupPermissions(int userGroupId, List<MyRewardsUserGroupPermission> request) {
@@ -264,19 +272,19 @@ public final class MyRewards {
     /**
      * In order to create a user account on the MyRewards 2.0 platform there is often some information about the user
      * we are creating that needs to be known before the account can be successfully created.
-     *
+     * <p>
      * Firstly, the user group that the user will be created as a member of must be known, we provide an endpoint to
      * query the usergroups for your programme and if necessary to reconstruct the hierarchy for the usergroups see
      * the usergroups section.
-     *
+     * <p>
      * Additionally, user accounts can have extra data required over and above the minimal default fields for a user
      * account. Typically, these take the form of employee data, membership number etc and can be defined as part of
      * your programme. These extra data are called registration_questions, for more information please see the
      * registration_questions section.
-     *
+     * <p>
      * Telephone and mobile number fields must be supplied in international format, meaning starting with a '+'
      * followed by the international country code (I.e. the UK is 44) followed by at least 8 numeric characters.
-     *
+     * <p>
      * Answers to the registration questions are provided in an array of objects, nested under the key
      * registration_answers_attributes. The nested objects themselves must have the keys registration_question_id
      * and answer.
@@ -294,7 +302,7 @@ public final class MyRewards {
     /**
      * The update user api is available to update user information.
      *
-     * @param userId the id of the user to update
+     * @param userId  the id of the user to update
      * @param request the changed user attributes
      * @return the updated user
      */

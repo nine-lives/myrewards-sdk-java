@@ -32,14 +32,14 @@ public class MyRewardsUserGroupPermission {
     static class ListWrapper {
         private List<MyRewardsUserGroupPermission> permissions;
 
-        public ListWrapper() {
+        ListWrapper() {
         }
 
-        public ListWrapper(List<MyRewardsUserGroupPermission> permissions) {
+        ListWrapper(List<MyRewardsUserGroupPermission> permissions) {
             this.permissions = permissions;
         }
 
-        public List<MyRewardsUserGroupPermission> getPermissions() {
+        List<MyRewardsUserGroupPermission> getPermissions() {
             return permissions;
         }
     }
