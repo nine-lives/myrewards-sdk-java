@@ -2,17 +2,17 @@
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.9ls/myrewards-java-sdk/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.9ls/myrewards-java-sdk)
 [![Build Status](https://api.travis-ci.org/nine-lives/myrewards-sdk-java.png)](https://travis-ci.org/nine-lives/myrewards-sdk-java)
-[![Code Quality](https://api.codacy.com/project/badge/grade/d289b210b4b94dc69384622a5732bb05)](https://www.codacy.com/app/nine-lives/myrewards-sdk-java)
-[![Coverage](https://api.codacy.com/project/badge/coverage/d289b210b4b94dc69384622a5732bb05)](https://www.codacy.com/app/nine-lives/myrewards-sdk-java)
+[![Code Quality](https://api.codacy.com/project/badge/grade/91e4e97db854401d878fcf1670dfed25)](https://www.codacy.com/app/nine-lives/myrewards-sdk-java)
+[![Coverage](https://api.codacy.com/project/badge/coverage/91e4e97db854401d878fcf1670dfed25)](https://www.codacy.com/app/nine-lives/myrewards-sdk-java)
 
 ## Getting Started
 
 The My Rewards API requires you to have an api key/token. 
 
-All API calls are routed from the `My Rewards` object.
+All API calls are routed from the `MyRewards` object.
 
 ```
-    My Rewards myrewards = My Rewards.make(apiKey);
+    MyRewards myrewards = MyRewards.make(apiKey);
 ```
 
 The sdk is hosted on maven central so you can include it as a dependency 
@@ -37,46 +37,16 @@ in your projects as follows:
     <dependency org="com.9ls" name="myrewards-java-sdk" rev="1.0.0" />
 ```
 
-## Create a Recipient
-
-To create a recipient:
-
-```
-        Recipient recipient = myrewards.createRecipient(Recipient.builder()
-            .withName("John Doe")
-            .withAccountNo("12345678")
-            .withSortCode("123456")
-            .withCurrencyCode("GBP")
-            .withLegalType(LegalType.PRIVATE)
-            .build());
-```
-
-## Execute a Bank Transfer
-
-To create a recipient:
-
-```
-        Transaction transaction = myrewards.transfer(BankTransfer
-            .withBankDetails("Integeration Spec", "12345678", "123456", LegalType.PRIVATE)
-            .withCurrencyCode("GBP")
-            .withAccountId("my-account-id")
-            .withAmount(1200)
-            .withIdempotentKey("my-idempotent-key)
-            .withReconciliation("my-reconcilation-key")
-            .withReference("my-reference")
-            .withTag("my-tag")
-            .build());
-```
-
 ## Custom Configuration
 
 You can also use `ClientConfiguration` to configure the SDK. Apart
 from the the api key all the other values have defaults.
 
 ```
-    My Rewards myrewards = My Rewards.make(new Configuration()
+    MyRewards myrewards = MyRewards.make(new Configuration()
         .withApiKey(apiKey)
-        .withEndpoint("https://api.myrewards.com")
+        .withSecretKey(secretKey)
+        .withEndpoint("https://api.my-rewards.co.uk")
         .withMaxConnectionsPerRoute(20)
         .withUserAgent("myrewards-sdk-java 1.0.0")
         .withBlockTillRateLimitReset(false)
