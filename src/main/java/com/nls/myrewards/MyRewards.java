@@ -312,4 +312,49 @@ public final class MyRewards {
                 request,
                 MyRewardsUser.class);
     }
+
+    /**
+     *  A Data Widget is used to show user specific information or data uploaded into the data widgets area.
+     *
+     *  This endpoint retrieves all data_widgets that belong to a programme (scoped by api key)
+     *
+     * @return all the available data widget
+     */
+    public List<MyRewardsDataWidget> getDataWidgets() {
+        return client.get(
+                "/api/v2/data_widgets",
+                null,
+                new TypeReference<List<MyRewardsDataWidget>>() {
+                });
+    }
+
+    /**
+     * Returns the specific data_widget & user_data_widget data for the user specified userId and the widgetId
+     * specified.
+     *
+     * @param userId the ID of the user you want to update data for
+     * @param widgetId the ID of the data_widget to retrieve
+     * @return the users widget
+     */
+    public MyRewardsDataWidget getUserDataWidget(int userId, int widgetId) {
+        return client.get(
+                String.format("/api/v2/users/%d/data_widgets/%d", userId, widgetId),
+                null,
+                MyRewardsDataWidget.class);
+    }
+
+    /**
+     * Update the data of the specific user_data_widget for the user specified { user_id } and the { id } specified.
+     *
+     * @param userId the ID of the user you want to update data for
+     * @param widgetId the ID of the data_widget to retrieve
+     * @param data your desired data string
+     * @return the updated widget
+     */
+    public MyRewardsDataWidget updateUserDataWidget(int userId, int widgetId, String data) {
+        return client.get(
+                String.format("/api/v2/users/%d/data_widgets/%d", userId, widgetId),
+                Collections.singletonMap("data", data),
+                MyRewardsDataWidget.class);
+    }
 }
