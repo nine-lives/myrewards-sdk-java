@@ -9,7 +9,7 @@ public class MyRewardsUserPermission extends MyRewardsUserGroupPermission {
         return state;
     }
 
-    static class ListWrapper {
+    public static class ListWrapper {
         private List<MyRewardsUserPermission> permissions;
 
         ListWrapper() {
@@ -19,7 +19,7 @@ public class MyRewardsUserPermission extends MyRewardsUserGroupPermission {
             this.permissions = permissions;
         }
 
-        List<MyRewardsUserPermission> getPermissions() {
+        public List<MyRewardsUserPermission> getPermissions() {
             return permissions;
         }
     }
