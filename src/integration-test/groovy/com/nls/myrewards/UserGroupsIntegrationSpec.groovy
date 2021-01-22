@@ -14,7 +14,7 @@ class UserGroupsIntegrationSpec extends BaseIntegrationSpec {
 
         then:
         list.size() >= 4
-        (list*.name as Set).containsAll(['unassigned', 'admins', 'users', 'leavers'])
+        (list*.name as Set).containsAll(['unassigned', 'global admins', 'leavers'])
     }
 
     def "I can get user group permissions"() {
@@ -22,7 +22,7 @@ class UserGroupsIntegrationSpec extends BaseIntegrationSpec {
         List<MyRewardsUserGroup> list = client.getUserGroups()
 
         when:
-        MyRewardsUserGroup group = list.find { it.name == 'admins' }
+        MyRewardsUserGroup group = list.find { it.name == 'global admins' }
         MyRewardsUserGroupResources resources = new MyRewardsUserGroupResources(
                 group,
                 client.getUserGroupPermissions(group.id));
@@ -44,18 +44,6 @@ class UserGroupsIntegrationSpec extends BaseIntegrationSpec {
 
         then:
         resources.activeResourceNames == [] as Set
-
-        when:
-        group = list.find { it.name == 'users' }
-        resources = new MyRewardsUserGroupResources(
-                group,
-                client.getUserGroupPermissions(group.id));
-
-        then:
-        resources.activeResourceNames == ['General'] as Set
-        (resource = resources.getResource('General')) != null
-        resource.activePermissions.size() == 1
-        resource.hasActivePermission('Enable log in')
 
         when:
         group = list.find { it.name == 'leavers' }
