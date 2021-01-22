@@ -1,7 +1,8 @@
-package com.nls.myrewards.util
+package com.nls.myrewards.client
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.nls.myrewards.client.ObjectMapperFactory
 import spock.lang.Specification
 
 class ObjectMapperFactorySpec extends Specification {

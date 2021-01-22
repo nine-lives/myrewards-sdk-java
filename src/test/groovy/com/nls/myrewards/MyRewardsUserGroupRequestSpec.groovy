@@ -1,8 +1,8 @@
 package com.nls.myrewards
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.nls.myrewards.util.ObjectMapperFactory
-import com.nls.myrewards.util.RequestParameterMapper
+import com.nls.myrewards.client.ObjectMapperFactory
+import com.nls.myrewards.client.RequestParameterMapper
 import spock.lang.Specification
 
 class MyRewardsUserGroupRequestSpec extends Specification {

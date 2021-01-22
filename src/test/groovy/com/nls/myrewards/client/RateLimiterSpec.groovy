@@ -1,5 +1,6 @@
-package com.nls.myrewards.util
+package com.nls.myrewards.client
 
+import com.nls.myrewards.client.RateLimiter
 import spock.lang.Specification
 
 import java.time.Clock

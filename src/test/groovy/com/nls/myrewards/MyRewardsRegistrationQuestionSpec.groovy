@@ -1,8 +1,8 @@
 package com.nls.myrewards
 
-import com.fasterxml.jackson.core.type.TypeReference
+
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.nls.myrewards.util.ObjectMapperFactory
+import com.nls.myrewards.client.ObjectMapperFactory
 import spock.lang.Specification
 
 class MyRewardsRegistrationQuestionSpec extends Specification {
@@ -61,8 +61,7 @@ class MyRewardsRegistrationQuestionSpec extends Specification {
        '''
 
         when:
-        List<MyRewardsRegistrationQuestion> entity = mapper.readValue(payload, new TypeReference<List<MyRewardsRegistrationQuestion>>() {
-        })
+        List<MyRewardsRegistrationQuestion> entity = mapper.readValue(payload, MyRewardsRegistrationQuestion.LIST_TYPE_REFERENCE)
 
         then:
         entity.size() == 2

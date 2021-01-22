@@ -2,7 +2,7 @@ package com.nls.myrewards;
 
 import java.util.List;
 
-public class MyRewardsUserGroupPermission {
+public class MyRewardsUserGroupPermission implements IMyRewardsPermission {
     private int id;
     private String name;
     private String permissionGroupName;
@@ -29,7 +29,7 @@ public class MyRewardsUserGroupPermission {
         return this;
     }
 
-    static class ListWrapper {
+    public static class ListWrapper {
         private List<MyRewardsUserGroupPermission> permissions;
 
         ListWrapper() {
@@ -39,7 +39,7 @@ public class MyRewardsUserGroupPermission {
             this.permissions = permissions;
         }
 
-        List<MyRewardsUserGroupPermission> getPermissions() {
+        public List<MyRewardsUserGroupPermission> getPermissions() {
             return permissions;
         }
     }

@@ -1,8 +1,8 @@
 package com.nls.myrewards
 
-import com.fasterxml.jackson.core.type.TypeReference
+
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.nls.myrewards.util.ObjectMapperFactory
+import com.nls.myrewards.client.ObjectMapperFactory
 import org.joda.time.DateTime
 import spock.lang.Specification
 
@@ -50,7 +50,7 @@ class MyRewardsSiteMessageSpec extends Specification {
        '''
 
         when:
-        List<MyRewardsSiteMessage> entity = mapper.readValue(payload, new TypeReference<List<MyRewardsSiteMessage>>() {})
+        List<MyRewardsSiteMessage> entity = mapper.readValue(payload, MyRewardsSiteMessage.LIST_TYPE_REFERENCE)
 
         then:
         entity.size() == 2

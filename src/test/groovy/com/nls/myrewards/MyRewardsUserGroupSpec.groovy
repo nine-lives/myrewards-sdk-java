@@ -1,8 +1,8 @@
 package com.nls.myrewards
 
-import com.fasterxml.jackson.core.type.TypeReference
+
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.nls.myrewards.util.ObjectMapperFactory
+import com.nls.myrewards.client.ObjectMapperFactory
 import spock.lang.Specification
 
 class MyRewardsUserGroupSpec extends Specification {
@@ -16,7 +16,9 @@ class MyRewardsUserGroupSpec extends Specification {
                 "name" : "dc comics",
                 "parent_id" :  null,
                 "default" : "false",
-                "position" : 1
+                "programme" : "The Programme",
+                "position" : 1,
+                "image_url": "http://example_hosted_image_url.com/image.png"
             }
        '''
 
@@ -28,7 +30,9 @@ class MyRewardsUserGroupSpec extends Specification {
         entity.name == 'dc comics'
         entity.parentId == null
         !entity.defaultGroup
+        entity.programme == 'The Programme'
         entity.position == 1
+        entity.imageUrl == 'http://example_hosted_image_url.com/image.png'
     }
 
     def "I can covert a list JSON payload to the entity"() {
@@ -53,7 +57,7 @@ class MyRewardsUserGroupSpec extends Specification {
        '''
 
         when:
-        List<MyRewardsUserGroup> entity = mapper.readValue(payload, new TypeReference<List<MyRewardsUserGroup>>() {})
+        List<MyRewardsUserGroup> entity = mapper.readValue(payload, MyRewardsUserGroup.LIST_TYPE_REFERENCE)
 
         then:
         entity.size() == 2

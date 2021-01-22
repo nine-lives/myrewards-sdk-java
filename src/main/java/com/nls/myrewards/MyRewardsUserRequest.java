@@ -26,10 +26,10 @@ public class MyRewardsUserRequest {
     private LocalDate dateOfBirth;
     private String telephone;
     private String mobile;
-    private boolean tsandcs;
+    private Boolean tsandcs;
     private Integer userGroupId;
-    private boolean consented;
-    private boolean marketingConsented;
+    private Boolean consented;
+    private Boolean marketingConsented;
     private List<MyRewardsRegistrationAnswerAttribute> registrationAnswersAttributes = new ArrayList<>();
 
     public MyRewardsUserRequest() {
@@ -51,7 +51,7 @@ public class MyRewardsUserRequest {
         this.country = user.getCountry();
         this.dateOfBirth = user.getDateOfBirth();
         this.telephone = user.getTelephone();
-        this.mobile = user.getTelephone();
+        this.mobile = user.getMobile();
         this.tsandcs = user.isTsandcs();
         this.userGroupId = user.getUserGroupId();
         this.consented = user.isConsented();
@@ -207,11 +207,11 @@ public class MyRewardsUserRequest {
         return this;
     }
 
-    public boolean isTsandcs() {
+    public Boolean isTsandcs() {
         return tsandcs;
     }
 
-    public MyRewardsUserRequest withTsandcs(boolean tsandcs) {
+    public MyRewardsUserRequest withTsandcs(Boolean tsandcs) {
         this.tsandcs = tsandcs;
         return this;
     }
@@ -225,20 +225,20 @@ public class MyRewardsUserRequest {
         return this;
     }
 
-    public boolean isConsented() {
+    public Boolean isConsented() {
         return consented;
     }
 
-    public MyRewardsUserRequest withConsented(boolean consented) {
+    public MyRewardsUserRequest withConsented(Boolean consented) {
         this.consented = consented;
         return this;
     }
 
-    public boolean isMarketingConsented() {
+    public Boolean isMarketingConsented() {
         return marketingConsented;
     }
 
-    public MyRewardsUserRequest withMarketingConsented(boolean marketingConsented) {
+    public MyRewardsUserRequest withMarketingConsented(Boolean marketingConsented) {
         this.marketingConsented = marketingConsented;
         return this;
     }

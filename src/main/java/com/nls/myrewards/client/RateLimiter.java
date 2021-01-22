@@ -1,4 +1,4 @@
-package com.nls.myrewards.util;
+package com.nls.myrewards.client;
 
 import java.time.Clock;
 import java.util.concurrent.TimeUnit;

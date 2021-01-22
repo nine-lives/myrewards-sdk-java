@@ -1,8 +1,8 @@
 package com.nls.myrewards
 
-import com.fasterxml.jackson.core.type.TypeReference
+
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.nls.myrewards.util.ObjectMapperFactory
+import com.nls.myrewards.client.ObjectMapperFactory
 import org.joda.time.DateTime
 import spock.lang.Specification
 
@@ -30,6 +30,7 @@ class MyRewardsTransactionSpec extends Specification {
         then:
         entity.id == 123
         entity.userId == 124
+        entity.description == 'transactions'
         entity.value == 100
         entity.balance == 100
         entity.transactionType == 'programme points'
@@ -65,8 +66,7 @@ class MyRewardsTransactionSpec extends Specification {
        '''
 
         when:
-        List<MyRewardsTransaction> entity = mapper.readValue(payload, new TypeReference<List<MyRewardsTransaction>>() {
-        })
+        List<MyRewardsTransaction> entity = mapper.readValue(payload, MyRewardsTransaction.LIST_TYPE_REFERENCE)
 
         then:
         entity.size() == 2

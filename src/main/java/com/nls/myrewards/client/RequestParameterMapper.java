@@ -1,4 +1,4 @@
-package com.nls.myrewards.util;
+package com.nls.myrewards.client;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

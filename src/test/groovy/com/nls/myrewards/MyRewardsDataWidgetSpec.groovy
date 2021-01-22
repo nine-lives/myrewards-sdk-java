@@ -1,8 +1,8 @@
 package com.nls.myrewards
 
-import com.fasterxml.jackson.core.type.TypeReference
+
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.nls.myrewards.util.ObjectMapperFactory
+import com.nls.myrewards.client.ObjectMapperFactory
 import spock.lang.Specification
 
 class MyRewardsDataWidgetSpec extends Specification {
@@ -47,7 +47,7 @@ class MyRewardsDataWidgetSpec extends Specification {
        '''
 
         when:
-        List<MyRewardsDataWidget> entity = mapper.readValue(payload, new TypeReference<List<MyRewardsDataWidget>>() {})
+        List<MyRewardsDataWidget> entity = mapper.readValue(payload, MyRewardsDataWidget.LIST_TYPE_REFERENCE)
 
         then:
         entity.size() == 2

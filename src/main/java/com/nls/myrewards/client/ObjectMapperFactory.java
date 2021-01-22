@@ -1,4 +1,4 @@
-package com.nls.myrewards.util;
+package com.nls.myrewards.client;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.nls.myrewards.MyRewardsPermissionState;
 
 public final class ObjectMapperFactory {
     private static boolean failOnUnknownProperties;
@@ -19,6 +21,7 @@ public final class ObjectMapperFactory {
     public static ObjectMapper make() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JodaModule());
+        mapper.registerModule(new SimpleModule().addDeserializer(MyRewardsPermissionState.class, new MyRewardsPermissionStateDeserializer()));
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.enable(SerializationFeature.INDENT_OUTPUT);

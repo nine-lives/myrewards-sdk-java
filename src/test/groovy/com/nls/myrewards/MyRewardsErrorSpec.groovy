@@ -1,19 +1,20 @@
 package com.nls.myrewards
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.nls.myrewards.client.ObjectMapperFactory
 import spock.lang.Specification
 
 class MyRewardsErrorSpec extends Specification {
-    private ObjectMapper mapper = com.nls.myrewards.util.ObjectMapperFactory.make()
+    private ObjectMapper mapper = ObjectMapperFactory.make()
 
     def "I can convert a JSON payload with field errors to the entity"() {
         given:
         String payload = '''
                 {
-                    "error": {
-                        "field1": ["field1 error"],
-                        "field2": ["field2 error"]
-                    }
+                    "errors": [
+                        "field1 error",
+                        "field2 error"
+                    ]
                 }
        '''
 
@@ -21,17 +22,17 @@ class MyRewardsErrorSpec extends Specification {
         MyRewardsError entity = mapper.readValue(payload, MyRewardsError)
 
         then:
-        entity.message == 'Invalid request, check field errors'
-        entity.fieldErrors.size() == 2
-        entity.fieldErrors.field1 == ['field1 error']
-        entity.fieldErrors.field2 == ['field2 error']
+        entity.message == 'field1 error, field2 error'
+        entity.errors.size() == 2
+        entity.errors[0] == 'field1 error'
+        entity.errors[1] == 'field2 error'
     }
 
     def "I can covert a JSON payload with message error to the entity"() {
         given:
         String payload = '''
                 {
-                    "error": "serious malfunction"
+                    "errors": ["serious malfunction"]
                 }
        '''
 
@@ -40,8 +41,7 @@ class MyRewardsErrorSpec extends Specification {
 
         then:
         entity.message == 'serious malfunction'
-        entity.error == 'serious malfunction'
-        entity.fieldErrors.size() == 0
+        entity.errors[0] == 'serious malfunction'
     }
 
 }

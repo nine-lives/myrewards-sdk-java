@@ -1,6 +1,5 @@
 package com.nls.myrewards;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.nls.myrewards.client.HttpClient;
 
 import java.util.Collections;
@@ -44,8 +43,7 @@ public final class MyRewards {
      * @return all permissions for the current stack
      */
     public List<MyRewardsPermission> getPermissions() {
-        return client.get("/api/v2/permissions", null, new TypeReference<List<MyRewardsPermission>>() {
-        });
+        return client.get("/api/v2/permissions", null, MyRewardsPermission.LIST_TYPE_REFERENCE);
     }
 
     /**
@@ -57,8 +55,7 @@ public final class MyRewards {
      * @return a list of registration questions
      */
     public List<MyRewardsRegistrationQuestion> getRegistrationQuestions() {
-        return client.get("/api/v2/registration_questions", null, new TypeReference<List<MyRewardsRegistrationQuestion>>() {
-        });
+        return client.get("/api/v2/registration_questions", null, MyRewardsRegistrationQuestion.LIST_TYPE_REFERENCE);
     }
 
     /**
@@ -72,8 +69,7 @@ public final class MyRewards {
         return client.get(
                 String.format("/api/v2/registration_questions/%d/list_of_values", questionId),
                 null,
-                new TypeReference<List<MyRewardsRegistrationQuestionValue>>() {
-                });
+                MyRewardsRegistrationQuestionValue.LIST_TYPE_REFERENCE);
     }
 
     /**
@@ -88,8 +84,7 @@ public final class MyRewards {
         return client.post(
                 String.format("/api/v2/registration_questions/%d/list_of_values", questionId),
                 Collections.singletonMap("name", name),
-                new TypeReference<List<MyRewardsRegistrationQuestionValue>>() {
-                });
+                MyRewardsRegistrationQuestionValue.LIST_TYPE_REFERENCE);
     }
 
     /**
@@ -139,8 +134,7 @@ public final class MyRewards {
         return client.get(
                 String.format("/api/v2/users/%d/site_messages", userId),
                 null,
-                new TypeReference<List<MyRewardsSiteMessage>>() {
-                });
+                MyRewardsSiteMessage.LIST_TYPE_REFERENCE);
     }
 
     /**
@@ -171,8 +165,7 @@ public final class MyRewards {
         return client.get(
                 String.format("/api/v2/users/%d/transactions", userId),
                 null,
-                new TypeReference<List<MyRewardsTransaction>>() {
-                });
+                MyRewardsTransaction.LIST_TYPE_REFERENCE);
     }
 
     /**
@@ -216,8 +209,7 @@ public final class MyRewards {
         return client.get(
                 "/api/v2/user_groups",
                 null,
-                new TypeReference<List<MyRewardsUserGroup>>() {
-                });
+                MyRewardsUserGroup.LIST_TYPE_REFERENCE);
     }
 
     /**
@@ -262,7 +254,7 @@ public final class MyRewards {
      * @param request     the list of permissions to update
      * @return the updated permissions
      */
-    public List<MyRewardsUserGroupPermission> getUserGroupPermissions(int userGroupId, List<MyRewardsUserGroupPermission> request) {
+    public List<MyRewardsUserGroupPermission> setUserGroupPermissions(int userGroupId, List<MyRewardsUserGroupPermission> request) {
         return client.patch(
                 String.format("/api/v2/user_groups/%d/permissions", userGroupId),
                 new MyRewardsUserGroupPermission.ListWrapper(request),
@@ -299,6 +291,7 @@ public final class MyRewards {
                 MyRewardsUser.class);
     }
 
+
     /**
      * The update user api is available to update user information.
      *
@@ -314,6 +307,48 @@ public final class MyRewards {
     }
 
     /**
+     * An endpoint to fetch a list of permissions for a given user. Returns an array of permissions displaying it's
+     * parent permissions group name. This is to help identify different permissions when names are the same across
+     * separate groups. It will also display whether the permission is active for the given user and the state of the
+     * permission which can be Same As User Group or if the permission has been overridden for that user: Always Allow
+     * or Always Deny.
+     *
+     * @param userId the id of the user to update
+     * @return the permissions for that user
+     */
+    public List<MyRewardsUserPermission> getUserPermissions(int userId) {
+        return client.get(
+                String.format("/api/v2/users/%d/permissions", userId),
+                null,
+                MyRewardsUserPermission.ListWrapper.class).getPermissions();
+    }
+
+    /**
+     * A endpoint to update a list of permissions for a given user. Returns an array of permissions displaying it's
+     * parent permissions group name. This is to help identify different permissions when names are the same across
+     * separate groups. It will also display whether the permission is active for the given user and the state of the
+     * permission which can be Same As User Group or if the permission has been overridden for that user: Always Allow
+     * or Always Deny.
+     *
+     * The only value that this request will change is the active field. The other fields are present to make it
+     * easier to move from the GET request to a POST without having to reformat or delete much of the GET request
+     * response.
+     *
+     * N.B. When specifying active = true this will set the permission to "Always allow" setting to false will have
+     * the effect of "Always deny"
+     *
+     * @param userId the id of the user to update
+     * @param request the permissions to update
+     * @return the updated permissions
+     */
+    public List<MyRewardsUserPermission> setUserPermissions(int userId, List<MyRewardsUserPermission> request) {
+        return client.patch(
+                String.format("/api/v2/users/%d/permissions", userId),
+                new MyRewardsUserPermission.ListWrapper(request),
+                MyRewardsUserPermission.ListWrapper.class).getPermissions();
+    }
+
+    /**
      *  A Data Widget is used to show user specific information or data uploaded into the data widgets area.
      *
      *  This endpoint retrieves all data_widgets that belong to a programme (scoped by api key)
@@ -324,8 +359,7 @@ public final class MyRewards {
         return client.get(
                 "/api/v2/data_widgets",
                 null,
-                new TypeReference<List<MyRewardsDataWidget>>() {
-                });
+                MyRewardsDataWidget.LIST_TYPE_REFERENCE);
     }
 
     /**

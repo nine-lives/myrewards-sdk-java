@@ -1,11 +1,12 @@
 package com.nls.myrewards
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.nls.myrewards.client.ObjectMapperFactory
 import org.joda.time.LocalDate
 import spock.lang.Specification
 
 class MyRewardsUserSpec extends Specification {
-    private ObjectMapper mapper = com.nls.myrewards.util.ObjectMapperFactory.make()
+    private ObjectMapper mapper = ObjectMapperFactory.make()
 
     def "I can covert a JSON payload to the entity"() {
         given:

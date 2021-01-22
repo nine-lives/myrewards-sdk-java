@@ -73,6 +73,7 @@ task integrationTest(type: Test) {
 
     systemProperties = [
             myrewardsApiKey: System.getProperty('myrewardsApiKey'),
+            myrewardsSecretKey: System.getProperty('myrewardsSecretKey'),
             myrewardsEndpoint: System.getProperty('myrewardsEndpoint')
     ]
 

@@ -1,4 +1,5 @@
-package com.nls.myrewards.util
+package com.nls.myrewards.client
+
 
 import spock.lang.Specification
 

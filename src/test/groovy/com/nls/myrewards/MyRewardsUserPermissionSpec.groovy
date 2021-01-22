@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.nls.myrewards.client.ObjectMapperFactory
 import spock.lang.Specification
 
-class MyRewardsUserGroupPermissionSpec extends Specification {
+class MyRewardsUserPermissionSpec extends Specification {
     private ObjectMapper mapper = ObjectMapperFactory.make()
 
     def "I can covert a JSON payload to the entity"() {
@@ -15,18 +15,20 @@ class MyRewardsUserGroupPermissionSpec extends Specification {
               "id" : 1,
               "name" : "Enable log in",
               "permission_group_name" :  "General",
-              "active" : false
+              "active" : false,
+              "state" : "Same As User Group"
             }
        '''
 
         when:
-        MyRewardsUserGroupPermission entity = mapper.readValue(payload, MyRewardsUserGroupPermission.class)
+        MyRewardsUserPermission entity = mapper.readValue(payload, MyRewardsUserPermission.class)
 
         then:
         entity.id == 1
         entity.name == 'Enable log in'
         entity.permissionGroupName == 'General'
         !entity.active
+        entity.state == MyRewardsPermissionState.SameAsUserGroup
     }
 
     def "I can covert a list JSON payload to the entity"() {
@@ -38,20 +40,22 @@ class MyRewardsUserGroupPermissionSpec extends Specification {
                   "id" : 1,
                   "name" : "Enable log in",
                   "permission_group_name" :  "General",
-                  "active" : false
+                  "active" : false,
+                  "state" : "Same As User Group"
                 },
                 {
                   "id" : 2,
                   "name" : "Order Rewards",
                   "permission_group_name" :  "Rewards module",
-                  "active" : true
+                  "active" : true,
+                  "state" : "Always Allow"
                 }
               ]
             }
        '''
 
         when:
-        List<MyRewardsUserGroupPermission> entity = mapper.readValue(payload, MyRewardsUserGroupPermission.ListWrapper).getPermissions()
+        List<MyRewardsUserPermission> entity = mapper.readValue(payload, MyRewardsUserPermission.ListWrapper).getPermissions()
 
         then:
         entity.size() == 2
@@ -59,6 +63,6 @@ class MyRewardsUserGroupPermissionSpec extends Specification {
         entity[1].id == 2
         !entity[0].active
         entity[1].active
+        entity[1].state == MyRewardsPermissionState.AlwaysAllow
     }
-
 }

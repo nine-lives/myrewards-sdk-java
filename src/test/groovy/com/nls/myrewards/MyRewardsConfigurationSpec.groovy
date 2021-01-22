@@ -31,14 +31,14 @@ class MyRewardsConfigurationSpec extends Specification {
     def "I can set configuration values"() {
         when:
         MyRewardsConfiguration config = new MyRewardsConfiguration()
-            .withApiKey("secret")
-            .withSecretKey("sekret")
-            .withEndpoint("https://bpi.myrewards.com/")
-            .withMaxConnectionsPerRoute(22)
-            .withUserAgent("ninelives/9.0.0")
-            .withBlockTillRateLimitReset(true)
-            .withRequestBurstSize(25)
-            .withRequestsPerSecond(10)
+                .withApiKey("secret")
+                .withSecretKey("sekret")
+                .withEndpoint("https://bpi.myrewards.com/")
+                .withMaxConnectionsPerRoute(22)
+                .withUserAgent("ninelives/9.0.0")
+                .withBlockTillRateLimitReset(true)
+                .withRequestBurstSize(25)
+                .withRequestsPerSecond(10)
 
         then:
         config.apiKey == 'secret'
@@ -75,6 +75,21 @@ class MyRewardsConfigurationSpec extends Specification {
 
         then:
         config.userAgent == "myrewards-java-sdk/${version}".toString()
+    }
+
+    def "I can get the right configuration string depending if I have a secret key or not"() {
+        when:
+        MyRewardsConfiguration configuration = new MyRewardsConfiguration()
+                .withApiKey("apiKey")
+
+        then:
+        configuration.authenticationString == 'Token token=apiKey'
+
+        when:
+        configuration.withSecretKey("secretKey")
+
+        then:
+        configuration.authenticationString == 'Token token=apiKey:secretKey'
     }
 
 }

@@ -1,6 +1,12 @@
 package com.nls.myrewards;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.util.List;
+
 public final class MyRewardsRegistrationQuestion {
+    public static final TypeReference<List<MyRewardsRegistrationQuestion>> LIST_TYPE_REFERENCE = new TypeReference<List<MyRewardsRegistrationQuestion>>() { };
+
     private int id;
     private String label;
     private boolean mandatory;
