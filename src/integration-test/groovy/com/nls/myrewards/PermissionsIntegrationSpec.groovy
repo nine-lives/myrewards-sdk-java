@@ -1,8 +1,8 @@
 package com.nls.myrewards
 
 import com.nls.myrewards.client.ObjectMapperFactory
-import com.nls.myrewards.util.MyRewardsResource
-import com.nls.myrewards.util.MyRewardsResources
+import com.nls.myrewards.util.MyRewardsPermissionGroup
+import com.nls.myrewards.util.MyRewardsPermissionGroups
 
 class PermissionsIntegrationSpec extends BaseIntegrationSpec {
 
@@ -23,10 +23,10 @@ class PermissionsIntegrationSpec extends BaseIntegrationSpec {
     def "I get the permissions I am expecting"() {
         given:
         List<MyRewardsPermission> permissions = client.getPermissions()
-        MyRewardsResources resources = new MyRewardsResources(client.getPermissions());
+        MyRewardsPermissionGroups resources = new MyRewardsPermissionGroups(client.getPermissions());
 
         when:
-        MyRewardsResource general = resources.getResource('General')
+        MyRewardsPermissionGroup general = resources.getGroup('General')
 
         then:
         general.permissions.size() == 3
@@ -37,7 +37,7 @@ class PermissionsIntegrationSpec extends BaseIntegrationSpec {
         general.getPermission('Enable log in').name == 'Enable log in'
 
         when:
-        MyRewardsResource recognitions = resources.getResource('Recognitions module')
+        MyRewardsPermissionGroup recognitions = resources.getGroup('Recognitions module')
 
         then:
         recognitions.permissions.size() == 4
@@ -48,7 +48,7 @@ class PermissionsIntegrationSpec extends BaseIntegrationSpec {
         recognitions.hasPermission('Global recognition reporting')
 
         when:
-        MyRewardsResource rewards = resources.getResource('Rewards module')
+        MyRewardsPermissionGroup rewards = resources.getGroup('Rewards module')
 
         then:
         rewards.permissions.size() == 4
@@ -59,7 +59,7 @@ class PermissionsIntegrationSpec extends BaseIntegrationSpec {
         rewards.hasPermission('Send Person2Person transfer')
 
         when:
-        MyRewardsResource performance = resources.getResource('Performance module')
+        MyRewardsPermissionGroup performance = resources.getGroup('Performance module')
 
         then:
         performance.permissions.size() == 3
@@ -69,7 +69,7 @@ class PermissionsIntegrationSpec extends BaseIntegrationSpec {
         performance.hasPermission('Global reporting')
 
         when:
-        MyRewardsResource program = resources.getResource('Program in a Box')
+        MyRewardsPermissionGroup program = resources.getGroup('Program in a Box')
 
         then:
         program.permissions.size() == 1

@@ -1,13 +1,11 @@
 package com.nls.myrewards.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.nls.myrewards.MyRewardsPermission
-import com.nls.myrewards.MyRewardsUserGroup
 import com.nls.myrewards.MyRewardsUserGroupPermission
 import com.nls.myrewards.client.ObjectMapperFactory
 import spock.lang.Specification
 
-class MyRewardsUserGroupResourcesSpec extends Specification {
+class MyRewardsStatefulPermissionGroupsSpec extends Specification {
     private ObjectMapper mapper = ObjectMapperFactory.make()
 
     def "I can group permissions by resource"() {
@@ -120,18 +118,18 @@ class MyRewardsUserGroupResourcesSpec extends Specification {
                  }
                 '''
 
-        MyRewardsUserGroup group = mapper.readValue(groupPayload, MyRewardsUserGroup)
         List<MyRewardsUserGroupPermission> entity = mapper.readValue(permissionsPayload, MyRewardsUserGroupPermission.ListWrapper.class).permissions
 
         when:
-        MyRewardsUserGroupResources resources = new MyRewardsUserGroupResources(group, entity);
+        MyRewardsStatefulPermissionGroups<MyRewardsUserGroupPermission> resources = MyRewardsStatefulPermissionGroups.make(entity);
 
         then:
-        resources.resourceNames == ['General', 'Recognitions module', 'Rewards module', 'Performance module', 'Program in a Box'] as Set
-        resources.activeResourceNames == ['General'] as Set
+        resources.groupNames == ['General', 'Recognitions module', 'Rewards module', 'Performance module', 'Program in a Box'] as Set
+        resources.activeGroupNames == ['General'] as Set
+        resources.activePermissions*.permissionGroupName as Set == ['General'] as Set
 
         when:
-        MyRewardsUserGroupResource general = resources.getResource('General')
+        MyRewardsStatefulPermissionGroup general = resources.getGroup('General')
 
         then:
         general.name == 'General'
@@ -143,7 +141,7 @@ class MyRewardsUserGroupResourcesSpec extends Specification {
         general.getPermission('Enable log in').name == 'Enable log in'
 
         when:
-        MyRewardsUserGroupResource recognitions = resources.getResource('Recognitions module')
+        MyRewardsStatefulPermissionGroup recognitions = resources.getGroup('Recognitions module')
 
         then:
         recognitions.name == 'Recognitions module'
@@ -156,7 +154,7 @@ class MyRewardsUserGroupResourcesSpec extends Specification {
         !recognitions.hasActivePermission('Global recognition reporting')
 
         when:
-        MyRewardsUserGroupResource rewards = resources.getResource('Rewards module')
+        MyRewardsStatefulPermissionGroup rewards = resources.getGroup('Rewards module')
 
         then:
         rewards.name == 'Rewards module'
@@ -168,7 +166,7 @@ class MyRewardsUserGroupResourcesSpec extends Specification {
         !rewards.hasActivePermission('Send Person2Person transfer')
 
         when:
-        MyRewardsUserGroupResource performance = resources.getResource('Performance module')
+        MyRewardsStatefulPermissionGroup performance = resources.getGroup('Performance module')
 
         then:
         performance.name == 'Performance module'
@@ -179,7 +177,7 @@ class MyRewardsUserGroupResourcesSpec extends Specification {
         !performance.hasActivePermission('Global reporting')
 
         when:
-        MyRewardsUserGroupResource program = resources.getResource('Program in a Box')
+        MyRewardsStatefulPermissionGroup program = resources.getGroup('Program in a Box')
 
         then:
         program.name == 'Program in a Box'

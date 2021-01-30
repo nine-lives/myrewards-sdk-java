@@ -6,6 +6,7 @@ import spock.lang.Specification
 abstract class BaseIntegrationSpec extends Specification {
 
     protected static MyRewards client
+    private MyRewardsUserGroup testingGroup;
 
     def setupSpec() {
         ObjectMapperFactory.setFailOnUnknownProperties(true)
@@ -15,4 +16,24 @@ abstract class BaseIntegrationSpec extends Specification {
                 .withSecretKey(System.getProperty("myrewardsSecretKey") ?: System.getenv("myrewardsSecretKey")))
 
     }
+
+    protected MyRewardsUserGroup getTestingRootGroup() {
+        if (testingGroup != null) {
+            return testingGroup
+        }
+
+        List<MyRewardsUserGroup> list = client.userGroups
+        testingGroup = list.find {it.name == 'Testing Suite Group'}
+
+        if (testingGroup != null) {
+            return testingGroup
+        }
+
+        MyRewardsUserGroupRequest request = new MyRewardsUserGroupRequest()
+                .withName('Testing Suite Group')
+                .withPosition(99)
+        testingGroup = client.createUserGroup(request)
+        return testingGroup
+    }
+
 }

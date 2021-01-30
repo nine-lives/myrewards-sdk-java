@@ -2,7 +2,7 @@ package com.nls.myrewards;
 
 import java.util.List;
 
-public class MyRewardsUserGroupPermission implements IMyRewardsPermission {
+public class MyRewardsUserGroupPermission implements IMyRewardsStatefulPermission {
     private int id;
     private String name;
     private String permissionGroupName;

@@ -1,23 +1,24 @@
 package com.nls.myrewards.util;
 
-import com.nls.myrewards.MyRewardsPermission;
+import com.nls.myrewards.IMyRewardsPermission;
 
+import java.util.Collections;
 import java.util.List;
 
-public class MyRewardsResource {
+public class MyRewardsPermissionGroup<T extends IMyRewardsPermission> {
     private final String name;
-    private final List<MyRewardsPermission> permissions;
+    private final List<T> permissions;
 
-    public MyRewardsResource(String name, List<MyRewardsPermission> permissions) {
+    public MyRewardsPermissionGroup(String name, List<T> permissions) {
         this.name = name;
-        this.permissions = permissions;
+        this.permissions = Collections.unmodifiableList(permissions);
     }
 
     public String getName() {
         return name;
     }
 
-    public List<MyRewardsPermission> getPermissions() {
+    public List<T> getPermissions() {
         return permissions;
     }
 
@@ -25,7 +26,7 @@ public class MyRewardsResource {
         return permissions.stream().anyMatch(o -> o.getName().equals(name));
     }
 
-    public MyRewardsPermission getPermission(String name) {
+    public T getPermission(String name) {
         return permissions.stream().filter(o -> o.getName().equals(name)).findAny().orElse(null);
     }
 }

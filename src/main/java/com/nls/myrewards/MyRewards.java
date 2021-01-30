@@ -1,6 +1,7 @@
 package com.nls.myrewards;
 
 import com.nls.myrewards.client.HttpClient;
+import org.apache.http.HttpStatus;
 
 import java.util.Collections;
 import java.util.List;
@@ -213,11 +214,24 @@ public final class MyRewards {
     }
 
     /**
+     * Get a user group - this is proxy method that calls getUserGroups under the hood and extracts the user group
+     * with the matching id
+     *
+     * @param id the user group id
+     * @return the user group
+     */
+    public MyRewardsUserGroup getUserGroup(int id) {
+        return getUserGroups().stream().filter(o -> o.getId() == id).findAny()
+                .orElseThrow(() -> new MyRewardsServerException(HttpStatus.SC_NOT_FOUND, "Not Found", new MyRewardsError("User group not found with id " + id)));
+    }
+
+    /**
      * An endpoint to create a user group for this programme. Only accessible if the key has been granted access to
      * users. In order to create a usergroup a name is required. This usergroup can be nested underneath another user
      * group by passing the parent user group id. Images can be uploaded to the user group by passing a publicly
      * accessible image url. If no position is passed then it will default to the bottom of the hierachy.
      *
+     * @param request the user group details to create
      * @return the list of user groups
      */
     public MyRewardsUserGroup createUserGroup(MyRewardsUserGroupRequest request) {
@@ -233,6 +247,7 @@ public final class MyRewards {
      * names are the same across separate groups. It will also display whether the permission is active for a given
      * user_group.
      *
+     * @param userGroupId the user group id
      * @return the list of user group permissions
      */
     public List<MyRewardsUserGroupPermission> getUserGroupPermissions(int userGroupId) {
@@ -260,6 +275,17 @@ public final class MyRewards {
                 new MyRewardsUserGroupPermission.ListWrapper(request),
                 MyRewardsUserGroupPermission.ListWrapper.class).getPermissions();
     }
+
+    /**
+     * Fetch a user by id. This is currently using the update with no data to retrieve the user. Use at your own risk.
+     *
+     * @param userId the user's id
+     * @return the user
+     */
+    public MyRewardsUser getUser(int userId) {
+        return updateUser(userId, new MyRewardsUserRequest());
+    }
+
 
     /**
      * In order to create a user account on the MyRewards 2.0 platform there is often some information about the user
@@ -329,15 +355,15 @@ public final class MyRewards {
      * separate groups. It will also display whether the permission is active for the given user and the state of the
      * permission which can be Same As User Group or if the permission has been overridden for that user: Always Allow
      * or Always Deny.
-     *
+     * <p>
      * The only value that this request will change is the active field. The other fields are present to make it
      * easier to move from the GET request to a POST without having to reformat or delete much of the GET request
      * response.
-     *
+     * <p>
      * N.B. When specifying active = true this will set the permission to "Always allow" setting to false will have
      * the effect of "Always deny"
      *
-     * @param userId the id of the user to update
+     * @param userId  the id of the user to update
      * @param request the permissions to update
      * @return the updated permissions
      */
@@ -349,9 +375,9 @@ public final class MyRewards {
     }
 
     /**
-     *  A Data Widget is used to show user specific information or data uploaded into the data widgets area.
-     *
-     *  This endpoint retrieves all data_widgets that belong to a programme (scoped by api key)
+     * A Data Widget is used to show user specific information or data uploaded into the data widgets area.
+     * <p>
+     * This endpoint retrieves all data_widgets that belong to a programme (scoped by api key)
      *
      * @return all the available data widget
      */
@@ -363,10 +389,10 @@ public final class MyRewards {
     }
 
     /**
-     * Returns the specific data_widget & user_data_widget data for the user specified userId and the widgetId
+     * Returns the specific data_widget and user_data_widget data for the user specified userId and the widgetId
      * specified.
      *
-     * @param userId the ID of the user you want to update data for
+     * @param userId   the ID of the user you want to update data for
      * @param widgetId the ID of the data_widget to retrieve
      * @return the users widget
      */
@@ -380,9 +406,9 @@ public final class MyRewards {
     /**
      * Update the data of the specific user_data_widget for the user specified { user_id } and the { id } specified.
      *
-     * @param userId the ID of the user you want to update data for
+     * @param userId   the ID of the user you want to update data for
      * @param widgetId the ID of the data_widget to retrieve
-     * @param data your desired data string
+     * @param data     your desired data string
      * @return the updated widget
      */
     public MyRewardsDataWidget updateUserDataWidget(int userId, int widgetId, String data) {

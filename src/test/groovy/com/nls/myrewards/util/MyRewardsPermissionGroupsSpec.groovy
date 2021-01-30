@@ -6,7 +6,7 @@ import com.nls.myrewards.MyRewardsPermission
 import com.nls.myrewards.client.ObjectMapperFactory
 import spock.lang.Specification
 
-class MyRewardsResourcesSpec extends Specification {
+class MyRewardsPermissionGroupsSpec extends Specification {
     private ObjectMapper mapper = ObjectMapperFactory.make()
 
     def "I can group permissions by resource"() {
@@ -109,13 +109,13 @@ class MyRewardsResourcesSpec extends Specification {
         List<MyRewardsPermission> entity = mapper.readValue(payload, MyRewardsPermission.LIST_TYPE_REFERENCE)
 
         when:
-        MyRewardsResources resources = new MyRewardsResources(entity);
+        MyRewardsPermissionGroups resources = new MyRewardsPermissionGroups(entity);
 
         then:
-        resources.resourceNames == ['General', 'Recognitions module', 'Rewards module', 'Performance module', 'Program in a Box'] as Set
+        resources.groupNames == ['General', 'Recognitions module', 'Rewards module', 'Performance module', 'Program in a Box'] as Set
 
         when:
-        MyRewardsResource general = resources.getResource('General')
+        MyRewardsPermissionGroup general = resources.getGroup('General')
 
         then:
         general.permissions.size() == 3
@@ -126,7 +126,7 @@ class MyRewardsResourcesSpec extends Specification {
         general.getPermission('Enable log in').name == 'Enable log in'
 
         when:
-        MyRewardsResource recognitions = resources.getResource('Recognitions module')
+        MyRewardsPermissionGroup recognitions = resources.getGroup('Recognitions module')
 
         then:
         recognitions.permissions.size() == 4
@@ -137,7 +137,7 @@ class MyRewardsResourcesSpec extends Specification {
         recognitions.hasPermission('Global recognition reporting')
 
         when:
-        MyRewardsResource rewards = resources.getResource('Rewards module')
+        MyRewardsPermissionGroup rewards = resources.getGroup('Rewards module')
 
         then:
         rewards.permissions.size() == 4
@@ -148,7 +148,7 @@ class MyRewardsResourcesSpec extends Specification {
         rewards.hasPermission('Send Person2Person transfer')
 
         when:
-        MyRewardsResource performance = resources.getResource('Performance module')
+        MyRewardsPermissionGroup performance = resources.getGroup('Performance module')
 
         then:
         performance.permissions.size() == 3
@@ -158,7 +158,7 @@ class MyRewardsResourcesSpec extends Specification {
         performance.hasPermission('Global reporting')
 
         when:
-        MyRewardsResource program = resources.getResource('Program in a Box')
+        MyRewardsPermissionGroup program = resources.getGroup('Program in a Box')
 
         then:
         program.permissions.size() == 1

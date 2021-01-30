@@ -3,13 +3,14 @@ package com.nls.myrewards.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nls.myrewards.MyRewardsConfiguration;
 import com.nls.myrewards.MyRewardsError;
 import com.nls.myrewards.MyRewardsException;
 import com.nls.myrewards.MyRewardsServerException;
-import com.nls.myrewards.MyRewardsConfiguration;
 import org.apache.http.Header;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -167,12 +168,14 @@ public class HttpClient {
         return EntityUtils.toString(response.getEntity());
     }
 
-
     private CloseableHttpClient makeHttpClient(MyRewardsConfiguration configuration) {
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
         connectionManager.setMaxTotal(configuration.getMaxConnectionsPerRoute());
         connectionManager.setDefaultMaxPerRoute(configuration.getMaxConnectionsPerRoute());
-        return HttpClients.custom().setConnectionManager(connectionManager).build();
+        return HttpClients.custom()
+                .setConnectionManager(connectionManager)
+                .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build())
+                .build();
     }
 
     private HttpClientContext getHttpContext() {
