@@ -89,9 +89,9 @@ class MyRewardsUserRequestSpec extends Specification {
         entity.marketing_consented == true
         entity.user_group_id == 10
         entity.registration_answers_attributes.size() == 2
-        entity.registration_answers_attributes[0].registration_question_id == 2
+        entity.registration_answers_attributes[0].registration_question_id == "2"
         entity.registration_answers_attributes[0].answer == "Because I'm Batman"
-        entity.registration_answers_attributes[1].registration_question_id == 16
+        entity.registration_answers_attributes[1].registration_question_id == "16"
         entity.registration_answers_attributes[1].answer == "Alfred"
 
 
