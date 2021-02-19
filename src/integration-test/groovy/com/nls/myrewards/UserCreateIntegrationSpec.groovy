@@ -88,7 +88,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
                 .withTown("Gotham")
                 .withPostcode("G1 1BM")
                 .withCounty("New Jersey")
-                .withCountry('United States')
+                .withCountry('UK')
                 .withDateOfBirth(LocalDate.parse("1980-02-19"))
                 .withTelephone("+447876543210")
                 .withMobile("+447765432101")
@@ -96,7 +96,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
                 .withConsented(true)
                 .withMarketingConsented(true)
                 .withUserGroupId(testingRootGroup.id)
-        //.withRegistrationAnswersAttributes([new MyRewardsRegistrationAnswerAttribute(2, "Because I'm Batman")])
+                .withRegistrationAnswersAttributes([new MyRewardsRegistrationAnswerAttribute(10703, "Gold")])
         //.addRegistrationAnswersAttribute(new MyRewardsRegistrationAnswerAttribute(16, "Alfred"))
         MyRewardsUser user = client.createUser(request)
         println(ObjectMapperFactory.make().writeValueAsString(user))
@@ -161,4 +161,5 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
         movedUser.id == user.id
         movedUser.userGroupId == newGroup.id
     }
+
 }

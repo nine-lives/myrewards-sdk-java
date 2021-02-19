@@ -36,4 +36,19 @@ abstract class BaseIntegrationSpec extends Specification {
         return testingGroup
     }
 
+    protected MyRewardsUserGroup expectTestUserGroup(String name) {
+        List<MyRewardsUserGroup> list = client.userGroups
+        MyRewardsUserGroup group = testingGroup = list.find {it.name == name}
+
+        if (group == null) {
+            MyRewardsUserGroupRequest request = new MyRewardsUserGroupRequest()
+                    .withName(name)
+                    .withParentId(testingRootGroup.id)
+                    .withPosition(99)
+            group = client.createUserGroup(request)
+        }
+
+        return group
+    }
+
 }
