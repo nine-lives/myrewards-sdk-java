@@ -90,13 +90,14 @@ public final class MyRewards {
      *
      * @param questionId the question id
      * @param name       the name of the new list value
-     * @return a list of values for the question
+     * @return the created value
      */
-    public List<MyRewardsRegistrationQuestionValue> createRegistrationQuestionValues(int questionId, String name) {
-        return client.post(
+    public MyRewardsRegistrationQuestionValue createRegistrationQuestionValues(int questionId, String name) {
+        List<MyRewardsRegistrationQuestionValue> result = client.post(
                 String.format("/api/v2/registration_questions/%d/list_of_values", questionId),
                 Collections.singletonMap("name", name),
                 MyRewardsRegistrationQuestionValue.LIST_TYPE_REFERENCE);
+        return result.stream().filter(o -> o.getName().equals(name)).findAny().orElse(null);
     }
 
     /**

@@ -1,23 +1,23 @@
 package com.nls.myrewards;
 
 public final class MyRewardsRegistrationAnswerAttribute {
-    private int registrationQuestionId;
+    private String registrationQuestionId;
     private String answer;
 
     private MyRewardsRegistrationAnswerAttribute() {
     }
 
     public MyRewardsRegistrationAnswerAttribute(MyRewardsRegistrationAnswerAttribute copy) {
-        this(copy.registrationQuestionId, copy.answer);
+        this(copy.getRegistrationQuestionId(), copy.answer);
     }
 
     public MyRewardsRegistrationAnswerAttribute(int registrationQuestionId, String answer) {
-        this.registrationQuestionId = registrationQuestionId;
+        this.registrationQuestionId = String.valueOf(registrationQuestionId);
         this.answer = answer;
     }
 
     public int getRegistrationQuestionId() {
-        return registrationQuestionId;
+        return Integer.parseInt(registrationQuestionId);
     }
 
     public String getAnswer() {
