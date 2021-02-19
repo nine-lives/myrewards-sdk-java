@@ -42,7 +42,6 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
         user.lastname == 'Smith'
         user.userGroupId == 15607
         user.company == 'Sherpa Marketing'
-
     }
 
     @Ignore
