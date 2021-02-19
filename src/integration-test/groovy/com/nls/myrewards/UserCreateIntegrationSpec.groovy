@@ -2,63 +2,140 @@ package com.nls.myrewards
 
 import com.nls.myrewards.client.ObjectMapperFactory
 import org.joda.time.LocalDate
-import spock.lang.Ignore
 
 class UserCreateIntegrationSpec extends BaseIntegrationSpec {
-    @Ignore
-    def "I create marc@9ls.com as an admin user"() {
-        when:
-        MyRewardsUserRequest request = new MyRewardsUserRequest()
-        //.withUsername("bwayne")
-                .withEmail("marc@9ls.com")
-        //.withTitle("Mr")
-                .withFirstname("Marc")
-                .withLastname("Smith")
-                .withCompany("Sherpa Marketing")
-        //.withJobTitle("CTO")
-        //.withAddress1("Wayne Manor")
-        //.withAddress2("1007 Mountain Drive")
-        //.withTown("Gotham")
-        //.withPostcode("G1 1BM")
-        //.withCounty("New Jersey")
-        //.withCountry('United States')
-        //.withDateOfBirth(LocalDate.parse("1980-02-19"))
-        //.withTelephone("+447876543210")
-        //.withMobile("+447765432101")
-        //.withTsandcs(true)
-        //.withConsented(true)
-        //.withMarketingConsented(true)
-                .withUserGroupId(15607)
-        //.withRegistrationAnswersAttributes([new MyRewardsRegistrationAnswerAttribute(2, "Because I'm Batman")])
-        //.addRegistrationAnswersAttribute(new MyRewardsRegistrationAnswerAttribute(16, "Alfred"))
-        MyRewardsUser user = client.createUser(request)
-        println(ObjectMapperFactory.make().writeValueAsString(user))
 
-        then:
-        user != null
-        user.id > 0
-        user.email == 'marc@9ls.com'
-        user.firstname == 'Marc'
-        user.lastname == 'Smith'
-        user.userGroupId == 15607
-        user.company == 'Sherpa Marketing'
-    }
-
-    @Ignore
     def "I get an error when I try to create a user with an existing email address"() {
         when:
+        String email1 = getRandomEmail()
         MyRewardsUserRequest request = new MyRewardsUserRequest()
-                .withEmail("marc@9ls.com")
-                .withFirstname("Marc")
-                .withLastname("Smith")
-                .withCompany("Sherpa Marketing")
-                .withUserGroupId(15607)
-        client.createUser(request)
+                .withEmail(email1)
+                .withFirstname("Quigley")
+                .withLastname("Aaron")
+                .withCompany(testingCompany)
+                .withUserGroupId(testingRootGroup.id)
+        MyRewardsUser user = client.createUser(request)
+
+        then:
+        user.email == email1
+
+        when:
+        String email2 = getRandomEmail()
+        user = client.createUser(request.withEmail(email2))
+
+        then:
+        user.email == email2
+
+        when:
+        client.createUser(request.withEmail(email1))
 
         then:
         MyRewardsServerException e = thrown(MyRewardsServerException)
         e.statusCode == 422
         e.message.startsWith('422: Unprocessable Entity')
+    }
+
+    def "I get an error when I try to create a user with an existing mobile number"() {
+        when:
+        String phone1 = getRandomPhone(0)
+        MyRewardsUserRequest request = new MyRewardsUserRequest()
+                .withEmail(getRandomEmail())
+                .withMobile(phone1)
+                .withFirstname("Quigley")
+                .withLastname("Aaron")
+                .withCompany(testingCompany)
+                .withUserGroupId(testingRootGroup.id)
+        MyRewardsUser user = client.createUser(request)
+
+        then:
+        user.mobile == phone1
+
+        when:
+        String phone2 = getRandomPhone(1)
+        user = client.createUser(request.withMobile(phone2).withEmail(getRandomEmail()))
+
+        then:
+        user.mobile == phone2
+
+        when:
+        client.createUser(request.withMobile(phone1).withEmail(getRandomEmail()))
+
+        then:
+        MyRewardsServerException e = thrown(MyRewardsServerException)
+        e.statusCode == 422
+        e.message.startsWith('422: Unprocessable Entity')
+    }
+
+    def "I get an error when I try to create a user with an existing username"() {
+        when:
+        String username1 = getRandomUsername()
+        MyRewardsUserRequest request = new MyRewardsUserRequest()
+                .withEmail(getRandomEmail())
+                .withUsername(username1)
+                .withFirstname("Quigley")
+                .withLastname("Aaron")
+                .withCompany(testingCompany)
+                .withUserGroupId(testingRootGroup.id)
+        MyRewardsUser user = client.createUser(request)
+
+        then:
+        user.username == username1
+
+        when:
+        String username2 = getRandomUsername()
+        user = client.createUser(request.withUsername(username2).withEmail(getRandomEmail()))
+
+        then:
+        user.username == username2
+
+        when:
+        client.createUser(request.withUsername(username1).withEmail(getRandomEmail()))
+
+        then:
+        MyRewardsServerException e = thrown(MyRewardsServerException)
+        e.statusCode == 422
+        e.message.startsWith('422: Unprocessable Entity')
+    }
+
+    def "I get create a user with all other fields duplicated except for phone, mobile and username"() {
+        when:
+        String username1 = getRandomUsername()
+        MyRewardsUserRequest request = new MyRewardsUserRequest()
+                .withUsername(username1)
+                .withEmail(getRandomEmail())
+                .withTitle("Mr")
+                .withFirstname("Igor")
+                .withLastname("Frankfurter")
+                .withCompany(testingCompany)
+                .withJobTitle("CTO")
+                .withAddress1("Wayne Manor")
+                .withAddress2("1007 Mountain Drive")
+                .withTown("Gotham")
+                .withPostcode("G1 1BM")
+                .withCounty("New Jersey")
+                .withCountry('UK')
+                .withDateOfBirth(LocalDate.parse("1980-02-19"))
+                .withTelephone("+447876543210")
+                .withMobile(getRandomPhone(2))
+                .withTsandcs(true)
+                .withConsented(true)
+                .withMarketingConsented(true)
+                .withUserGroupId(testingRootGroup.id)
+                .withRegistrationAnswersAttributes([new MyRewardsRegistrationAnswerAttribute(10703, "Gold")])
+        MyRewardsUser user = client.createUser(request)
+
+        then:
+        user.username == username1
+
+        when:
+        String username2 = getRandomUsername()
+        user = client.createUser(request
+                .withUsername(username2)
+                .withEmail(getRandomEmail())
+                .withMobile(getRandomPhone(4)))
+
+        then:
+        user.username == username2
     }
 
     def "I can an error when I try to create a user without mandatory fields"() {
@@ -74,14 +151,13 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
 
     def "I can get a user's details by doing an empty update"() {
         when:
-        String uuid = UUID.randomUUID().toString()
         MyRewardsUserRequest request = new MyRewardsUserRequest()
-                .withUsername(uuid)
-                .withEmail("marc+${uuid}@9ls.com")
+                .withUsername(getRandomUsername())
+                .withEmail(getRandomEmail())
                 .withTitle("Mr")
-                .withFirstname("Marc")
-                .withLastname("Smith")
-                .withCompany("Sherpa Marketing")
+                .withFirstname("Joel")
+                .withLastname("Gooden")
+                .withCompany(testingCompany)
                 .withJobTitle("CTO")
                 .withAddress1("Wayne Manor")
                 .withAddress2("1007 Mountain Drive")
@@ -91,23 +167,21 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
                 .withCountry('UK')
                 .withDateOfBirth(LocalDate.parse("1980-02-19"))
                 .withTelephone("+447876543210")
-                //.withMobile("+447765432101")
+                .withMobile(getRandomPhone(5))
                 .withTsandcs(true)
                 .withConsented(true)
                 .withMarketingConsented(true)
                 .withUserGroupId(testingRootGroup.id)
-                .withRegistrationAnswersAttributes([new MyRewardsRegistrationAnswerAttribute(10703, "Gold")])
-                //.withRegistrationAnswersAttributes([new MyRewardsRegistrationAnswerAttribute(10606, "Sherpa Marketing")])
-        //.addRegistrationAnswersAttribute(new MyRewardsRegistrationAnswerAttribute(16, "Alfred"))
+
         MyRewardsUser user = client.createUser(request)
-        println(ObjectMapperFactory.make().writeValueAsString(user))
+        //println(ObjectMapperFactory.make().writeValueAsString(user))
 
         then:
         user != null
         user.id > 0
 
         when:
-        MyRewardsUserRequest getRequest = new MyRewardsUserRequest();
+        MyRewardsUserRequest getRequest = new MyRewardsUserRequest()
         MyRewardsUser updateUser = client.updateUser(user.id, getRequest)
         println(ObjectMapperFactory.make().writeValueAsString(updateUser))
 
@@ -137,11 +211,11 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
     def "I can get move a user from one group to another"() {
         when:
         MyRewardsUserRequest request = new MyRewardsUserRequest()
-                .withEmail("marc+${UUID.randomUUID().toString()}@9ls.com")
+                .withEmail(getRandomEmail())
                 .withTitle("Mr")
                 .withFirstname("Test")
                 .withLastname("User")
-                .withCompany("Sherpa Marketing")
+                .withCompany(testingCompany)
                 .withUserGroupId(testingRootGroup.id)
         MyRewardsUser user = client.createUser(request)
 
@@ -162,5 +236,4 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
         movedUser.id == user.id
         movedUser.userGroupId == newGroup.id
     }
-
 }

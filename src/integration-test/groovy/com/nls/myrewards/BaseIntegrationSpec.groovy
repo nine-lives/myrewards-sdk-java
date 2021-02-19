@@ -4,9 +4,10 @@ import com.nls.myrewards.client.ObjectMapperFactory
 import spock.lang.Specification
 
 abstract class BaseIntegrationSpec extends Specification {
-
+    protected static final int COMPANY_MAGIC_NUMBER = 10606
     protected static MyRewards client
     private MyRewardsUserGroup testingGroup;
+    private String testingCompany;
 
     def setupSpec() {
         ObjectMapperFactory.setFailOnUnknownProperties(true)
@@ -51,4 +52,33 @@ abstract class BaseIntegrationSpec extends Specification {
         return group
     }
 
+    protected String getTestingCompany() {
+        if (testingCompany != null) {
+            return testingCompany
+        }
+
+        String testSuiteCompany = "Testing Corp (Test Suite)";
+
+        MyRewardsRegistrationQuestionValue value = client.getRegistrationQuestionValue(COMPANY_MAGIC_NUMBER, testSuiteCompany);
+        if (value != null) {
+            testingCompany = value.name
+            return testingCompany
+        }
+
+        testingCompany = client.createRegistrationQuestionValues(COMPANY_MAGIC_NUMBER, testSuiteCompany).name
+        return testingCompany
+    }
+
+
+    protected String getRandomPhone(int index) {
+        "+44${String.valueOf(System.currentTimeMillis()).reverse().drop(2).take(9).reverse()}${index}"
+    }
+
+    protected String getRandomEmail(String uuid = UUID.randomUUID().toString()) {
+        "tester+${uuid}@testcorp.com"
+    }
+
+    protected String getRandomUsername(String uuid = UUID.randomUUID().toString()) {
+        "tester-${uuid}"
+    }
 }

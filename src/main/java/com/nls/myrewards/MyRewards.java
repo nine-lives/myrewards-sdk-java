@@ -85,6 +85,17 @@ public final class MyRewards {
     }
 
     /**
+     * Fetch a value by the name. This really just calls the list of all values and filters it out, so it's not efficient
+     *
+     * @param questionId the question id
+     * @param name the name
+     * @return the value or null
+     */
+    public MyRewardsRegistrationQuestionValue getRegistrationQuestionValue(int questionId, String name) {
+        return getRegistrationQuestionValues(questionId).stream().filter(o -> o.getName().equals(name)).findAny().orElse(null);
+    }
+
+    /**
      * An endpoint to create a new list value for a registration question. On completion, returns an array of all
      * values with their name and id.
      *

@@ -4,8 +4,6 @@ import com.nls.myrewards.client.ObjectMapperFactory
 
 class RegistrationQuestionsIntegrationSpec extends BaseIntegrationSpec {
 
-    public static final int COMPANY_MAGIC_NUMBER = 10606
-
     def "I can list registration questions"() {
         when:
         List<MyRewardsRegistrationQuestion> list = client.registrationQuestions
@@ -95,4 +93,22 @@ class RegistrationQuestionsIntegrationSpec extends BaseIntegrationSpec {
         e.error.errors.size() == 1
     }
 
+
+    def "I can't create an answer if the name is blank"() {
+        when:
+        client.createRegistrationQuestionValues(COMPANY_MAGIC_NUMBER, "")
+
+        then:
+        MyRewardsServerException e = thrown(MyRewardsServerException)
+        e.error.message == "Validation failed: Name can't be blank"
+        e.error.errors.size() == 1
+
+        when:
+        client.createRegistrationQuestionValues(COMPANY_MAGIC_NUMBER, null)
+
+        then:
+        e = thrown(MyRewardsServerException)
+        e.error.message == "Validation failed: Name can't be blank"
+        e.error.errors.size() == 1
+    }
 }
