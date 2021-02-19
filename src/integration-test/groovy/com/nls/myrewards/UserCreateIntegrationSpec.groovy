@@ -97,6 +97,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
                 .withMarketingConsented(true)
                 .withUserGroupId(testingRootGroup.id)
                 .withRegistrationAnswersAttributes([new MyRewardsRegistrationAnswerAttribute(10703, "Gold")])
+                //.withRegistrationAnswersAttributes([new MyRewardsRegistrationAnswerAttribute(10606, "Sherpa Marketing")])
         //.addRegistrationAnswersAttribute(new MyRewardsRegistrationAnswerAttribute(16, "Alfred"))
         MyRewardsUser user = client.createUser(request)
         println(ObjectMapperFactory.make().writeValueAsString(user))

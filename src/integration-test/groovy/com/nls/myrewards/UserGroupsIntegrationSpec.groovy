@@ -34,7 +34,7 @@ class UserGroupsIntegrationSpec extends BaseIntegrationSpec {
                 client.getUserGroupPermissions(group.id));
 
         then:
-        resources.activeGroupNames == ['General'] as Set
+        resources.activeGroupNames == ['General', 'Performance module'] as Set
         MyRewardsStatefulPermissionGroup resource = resources.getGroup('General')
         resource.activePermissions.size() == 3
         resource.hasActivePermission('Enable log in')
