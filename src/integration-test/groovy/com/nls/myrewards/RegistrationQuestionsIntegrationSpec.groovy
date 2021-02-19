@@ -40,7 +40,7 @@ class RegistrationQuestionsIntegrationSpec extends BaseIntegrationSpec {
         e.error.errors[0] == 'registration question not found'
     }
 
-    def "I can the magic number question for companies"() {
+    def "I can get values using the magic number question for companies"() {
         when:
         List<MyRewardsRegistrationQuestionValue> list = client.getRegistrationQuestionValues(COMPANY_MAGIC_NUMBER)
         //list.each { println(ObjectMapperFactory.make().writeValueAsString(it)) }

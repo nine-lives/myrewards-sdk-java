@@ -2,7 +2,7 @@ package com.nls.myrewards
 
 class UserPermissionsIntegrationSpec extends BaseIntegrationSpec {
 
-    def "I can change user permissions and check state is relative to user group"() {
+    def "I can change user permissions and check state relative to user group"() {
         given:
         MyRewardsUserGroup group = expectTestUserGroup("Test User Group Permission Setting " + UUID.randomUUID().toString())
         List<MyRewardsUserGroupPermission> groupPermissions = client.getUserGroupPermissions(group.id)

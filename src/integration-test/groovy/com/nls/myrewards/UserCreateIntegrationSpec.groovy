@@ -97,7 +97,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
         e.message.startsWith('422: Unprocessable Entity')
     }
 
-    def "I get create a user with all other fields duplicated except for phone, mobile and username"() {
+    def "I can create a user with all other fields duplicated except for phone, mobile and username"() {
         when:
         String username1 = getRandomUsername()
         MyRewardsUserRequest request = new MyRewardsUserRequest()
@@ -138,7 +138,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
         user.username == username2
     }
 
-    def "I can an error when I try to create a user without mandatory fields"() {
+    def "I get an error when I try to create a user without mandatory fields"() {
         when:
         MyRewardsUserRequest request = new MyRewardsUserRequest()
         client.createUser(request)
@@ -208,7 +208,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
         updateUser.userGroupId == user.userGroupId
     }
 
-    def "I can get move a user from one group to another"() {
+    def "I can move a user from one group to another"() {
         when:
         MyRewardsUserRequest request = new MyRewardsUserRequest()
                 .withEmail(getRandomEmail())
