@@ -56,7 +56,7 @@ from the the api key all the other values have defaults.
 
 | Configuration Attribute | Description |
 | ----------------------- | ----------- |
-| Endpoint | The base api url. Defaults to https://api.myrewards.com |
+| Endpoint | The base api url. Defaults to https://staging.my-rewards.co.uk |
 | MaxConnectionsPerRoute | The effective maximum number of concurrent connections in the pool. Connections try to make use of the keep-alive directive. Defaults to 20
 | UserAgent | The user agent string sent in the request
 | BlockTillRateLimitReset | If set to true then the client will block if the rate limit has been reached until the reset timestamp has expired. Defaults to false
