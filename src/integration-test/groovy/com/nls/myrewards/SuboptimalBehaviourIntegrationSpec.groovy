@@ -8,10 +8,9 @@ class SuboptimalBehaviourIntegrationSpec extends BaseIntegrationSpec {
 
     def "Groups are sorted alphabetically if position is equal"() {
         when:
-        MyRewardsUserGroup testingGroup = testingRootGroup
         MyRewardsUserGroupRequest request = new MyRewardsUserGroupRequest()
                 .withName("Test Group - Sort Order Test")
-                .withParentId(testingGroup.id)
+                .withParentId(testingRootGroup.id)
                 .withPosition(99)
 
         MyRewardsUserGroup root = client.createUserGroup(request)

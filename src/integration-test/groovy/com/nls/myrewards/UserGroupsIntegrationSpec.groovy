@@ -60,11 +60,10 @@ class UserGroupsIntegrationSpec extends BaseIntegrationSpec {
 
     def "I can create a user group"() {
         when:
-        MyRewardsUserGroup testingGroup = testingRootGroup
         MyRewardsUserGroupRequest request = new MyRewardsUserGroupRequest()
             .withName("Test Sub Group")
             .withPosition(3)
-            .withParentId(testingGroup.id)
+            .withParentId(testingRootGroup.id)
             .withImageUrl("https://b2bm.s3.amazonaws.com/styles/panopoly_image_square/s3/sherpa_directory_logo.png?itok=EdxRJCBn")
         MyRewardsUserGroup group = client.createUserGroup(request)
 
@@ -72,20 +71,19 @@ class UserGroupsIntegrationSpec extends BaseIntegrationSpec {
         group.id > 0
         group.name == request.getName()
         group.position == 3
-        group.parentId == testingGroup.id
+        group.parentId == testingRootGroup.id
         group.imageUrl != null
     }
 
     def "I can assign permissions to the user group"() {
         given:
-        MyRewardsUserGroup testingGroup = testingRootGroup
-        List<MyRewardsUserGroupPermission> permissions = client.getUserGroupPermissions(testingGroup.id)
+        List<MyRewardsUserGroupPermission> permissions = client.getUserGroupPermissions(testingRootGroup.id)
         //println(permissions.findAll { it.active }.size())
         //println(permissions.findAll { it.active }*.name)
 
         when:
         permissions.each { it.withActive(false) }
-        permissions = client.setUserGroupPermissions(testingGroup.id, permissions)
+        permissions = client.setUserGroupPermissions(testingRootGroup.id, permissions)
         //println(permissions.findAll { it.active }.size())
         //println(permissions.findAll { it.active }*.name)
 
@@ -94,7 +92,7 @@ class UserGroupsIntegrationSpec extends BaseIntegrationSpec {
 
         when:
         permissions.each { it.withActive(true) }
-        permissions = client.setUserGroupPermissions(testingGroup.id, permissions)
+        permissions = client.setUserGroupPermissions(testingRootGroup.id, permissions)
         //println(permissions.findAll { it.active }.size())
         println(permissions.findAll { !it.active }*.name)
 
