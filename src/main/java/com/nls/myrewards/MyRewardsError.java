@@ -2,6 +2,8 @@ package com.nls.myrewards;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public final class MyRewardsError {
 
@@ -15,7 +17,9 @@ public final class MyRewardsError {
     }
 
     public String getMessage() {
-        return String.join(", ", errors);
+        return errors == null
+                ? ""
+                : errors.stream().filter(Objects::nonNull).collect(Collectors.joining(", "));
     }
 
     public List<String> getErrors() {

@@ -174,7 +174,7 @@ public class HttpClient {
         connectionManager.setDefaultMaxPerRoute(configuration.getMaxConnectionsPerRoute());
         return HttpClients.custom()
                 .setConnectionManager(connectionManager)
-                .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).build())
+                .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
                 .build();
     }
 
