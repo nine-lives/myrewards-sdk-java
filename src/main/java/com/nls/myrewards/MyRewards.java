@@ -398,6 +398,56 @@ public final class MyRewards {
     }
 
     /**
+     * Endpoint to fetch a list of the performance categories for a performance module enabled programme
+     *
+     * @return the performance categories
+     */
+    public List<MyRewardsPerformanceCategory> getPerformanceCategories() {
+        return client.get(
+                "/api/v2/performance/performance_categories",
+                null,
+                MyRewardsPerformanceCategory.LIST_TYPE_REFERENCE);
+    }
+
+    /**
+     * Endpoint to create performance products for a programme with the performance module enabled.
+     *
+     * @return the products
+     */
+    public List<MyRewardsPerformanceProduct> createPerformanceProducts(List<MyRewardsPerformanceProductRequest> request) {
+        return client.post(
+                "/api/v2/performance/performance_product_batches",
+                new MyRewardsPerformanceProductRequest.ListWrapper(request),
+                MyRewardsPerformanceProduct.LIST_TYPE_REFERENCE);
+    }
+
+    /**
+     * Endpoint to create performance products for a programme with the performance module enabled.
+     *
+     * @return the products
+     */
+    public List<MyRewardsPerformanceProduct> updatePerformanceProducts(List<MyRewardsPerformanceProductRequest> request) {
+        return client.put(
+                "/api/v2/performance/performance_product_batches",
+                new MyRewardsPerformanceProductRequest.ListWrapper(request),
+                MyRewardsPerformanceProduct.LIST_TYPE_REFERENCE);
+    }
+
+    /**
+     * Endpoint to create allocated claims against specific promotion. Claims are created by using the
+     * data_field names from above as key/value pairs. Your request must include user_group_id or company_id,
+     * depending on the promotion configuration.
+     *
+     * @param request the claims to submit
+     * @return the created values
+     */
+    public List<MyRewardsCreateAllocatedClaim> createAllocatedClaims(int promotionId, List<MyRewardsCreateAllocatedClaimRequest> request) {
+        return client.post(String.format("api/v2/performance/promotions/%d/allocated_claims", promotionId),
+                new MyRewardsCreateAllocatedClaimRequest.ListWrapper(request),
+                MyRewardsCreateAllocatedClaim.ListWrapper.class).getAllocatedClaims();
+    }
+
+    /**
      * A Data Widget is used to show user specific information or data uploaded into the data widgets area.
      * <p>
      * This endpoint retrieves all data_widgets that belong to a programme (scoped by api key)

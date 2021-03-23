@@ -17,6 +17,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.StringEntity;
@@ -64,6 +65,16 @@ public class HttpClient {
 
     public <T> T post(String path, Object data, TypeReference<T> responseType) {
         HttpPost request = setPayload(new HttpPost(getUri(path, null)), data);
+        return executeAndTransform(request, responseType);
+    }
+
+    public <T> T put(String path, Object data, Class<T> responseType) {
+        HttpPut request = setPayload(new HttpPut(getUri(path, null)), data);
+        return executeAndTransform(request, responseType);
+    }
+
+    public <T> T put(String path, Object data, TypeReference<T> responseType) {
+        HttpPut request = setPayload(new HttpPut(getUri(path, null)), data);
         return executeAndTransform(request, responseType);
     }
 

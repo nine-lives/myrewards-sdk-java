@@ -236,4 +236,10 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
         movedUser.id == user.id
         movedUser.userGroupId == newGroup.id
     }
+
+    def "I can find a user"() {
+        given:
+        int start = 506678
+        String email = 'marc@9ls.com'
+    }
 }

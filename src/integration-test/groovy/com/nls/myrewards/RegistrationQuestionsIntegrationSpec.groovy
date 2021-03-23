@@ -43,7 +43,7 @@ class RegistrationQuestionsIntegrationSpec extends BaseIntegrationSpec {
     def "I can get values using the magic number question for companies"() {
         when:
         List<MyRewardsRegistrationQuestionValue> list = client.getRegistrationQuestionValues(COMPANY_MAGIC_NUMBER)
-        //list.each { println(ObjectMapperFactory.make().writeValueAsString(it)) }
+        list.each { println(ObjectMapperFactory.make().writeValueAsString(it)) }
 
         then:
         !list.isEmpty();
