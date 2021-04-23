@@ -39,6 +39,12 @@ public class MyRewardsServerException extends MyRewardsException {
         return error;
     }
 
+    public String getErrorMessage() {
+        return error == null || error.getMessage() == null || error.getMessage().trim().isEmpty()
+                ? (getMessage() == null || getMessage().trim().isEmpty() ? toString() : getMessage())
+                : error.getMessage();
+    }
+
     private static String buildMessage(int statusCode, String statusMessage, MyRewardsError error) {
         StringBuilder sb = new StringBuilder();
         sb.append(statusCode).append(": ").append(statusMessage);
