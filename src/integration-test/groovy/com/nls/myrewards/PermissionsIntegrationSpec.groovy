@@ -29,7 +29,7 @@ class PermissionsIntegrationSpec extends BaseIntegrationSpec {
         MyRewardsPermissionGroup general = resources.getGroup('General')
 
         then:
-        general.permissions.size() == 3
+        general.permissions.size() >= 3
         general.name == 'General'
         general.hasPermission('Enable log in')
         general.hasPermission('Local Overview Reporting')

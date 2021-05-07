@@ -10,7 +10,7 @@ class RegistrationQuestionsIntegrationSpec extends BaseIntegrationSpec {
         list.each { println(ObjectMapperFactory.make().writeValueAsString(it)) }
 
         then:
-        list.size() == 1;
+        list.size() >= 1;
         list.get(0).id == 10703
         list.get(0).label == 'tier_level'
         !list.get(0).mandatory
@@ -89,7 +89,7 @@ class RegistrationQuestionsIntegrationSpec extends BaseIntegrationSpec {
 
         then:
         MyRewardsServerException e = thrown(MyRewardsServerException)
-        e.error.message == 'Validation failed: Name should be unique'
+        e.error.message == '{"errors":[{"identifier":["There is already a company with this identifier"]},{"name":["should be unique"]}]}'
         e.error.errors.size() == 1
     }
 
@@ -100,7 +100,7 @@ class RegistrationQuestionsIntegrationSpec extends BaseIntegrationSpec {
 
         then:
         MyRewardsServerException e = thrown(MyRewardsServerException)
-        e.error.message == "Validation failed: Name can't be blank"
+        e.error.message == "{\"errors\":[{\"name\":[\"can't be blank\"],\"identifier\":[\"can't be blank\"]},{\"name\":[\"can't be blank\"]}]}"
         e.error.errors.size() == 1
 
         when:
@@ -108,7 +108,7 @@ class RegistrationQuestionsIntegrationSpec extends BaseIntegrationSpec {
 
         then:
         e = thrown(MyRewardsServerException)
-        e.error.message == "Validation failed: Name can't be blank"
+        e.error.message == "{\"errors\":[{\"name\":[\"can't be blank\"],\"identifier\":[\"can't be blank\"]},{\"name\":[\"can't be blank\"]}]}"
         e.error.errors.size() == 1
     }
 }
