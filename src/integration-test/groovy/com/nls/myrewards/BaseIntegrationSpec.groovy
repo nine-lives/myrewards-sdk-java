@@ -53,6 +53,14 @@ abstract class BaseIntegrationSpec extends Specification {
         return group
     }
 
+    protected String getTestingCompanyIdentifier() {
+        if (testingCompanyNew == null) {
+            getTestingCompany()
+        }
+
+        return testingCompanyNew.identifier;
+    }
+
     protected String getTestingCompany() {
         if (testingCompany != null) {
             return testingCompany

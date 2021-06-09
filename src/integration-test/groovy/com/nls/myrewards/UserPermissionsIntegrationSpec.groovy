@@ -14,7 +14,7 @@ class UserPermissionsIntegrationSpec extends BaseIntegrationSpec {
                 .withTitle("Lord")
                 .withFirstname("Higgledy")
                 .withLastname("Piggledy")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withUserGroupId(group.id)
         MyRewardsUser user = client.createUser(request)
 

@@ -12,7 +12,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
                 .withEmail(email1)
                 .withFirstname("Quigley")
                 .withLastname("Aaron")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withUserGroupId(testingRootGroup.id)
         MyRewardsUser user = client.createUser(request)
 
@@ -43,7 +43,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
                 .withMobile(phone1)
                 .withFirstname("Quigley")
                 .withLastname("Aaron")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withUserGroupId(testingRootGroup.id)
         MyRewardsUser user = client.createUser(request)
 
@@ -74,7 +74,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
                 .withUsername(username1)
                 .withFirstname("Quigley")
                 .withLastname("Aaron")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withUserGroupId(testingRootGroup.id)
         MyRewardsUser user = client.createUser(request)
 
@@ -106,7 +106,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
                 .withTitle("Mr")
                 .withFirstname("Igor")
                 .withLastname("Frankfurter")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withJobTitle("CTO")
                 .withAddress1("Wayne Manor")
                 .withAddress2("1007 Mountain Drive")
@@ -157,7 +157,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
                 .withTitle("Mr")
                 .withFirstname("Joel")
                 .withLastname("Gooden")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withJobTitle("CTO")
                 .withAddress1("Wayne Manor")
                 .withAddress2("1007 Mountain Drive")
@@ -215,7 +215,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
                 .withTitle("Mr")
                 .withFirstname("Test")
                 .withLastname("User")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withUserGroupId(testingRootGroup.id)
         MyRewardsUser user = client.createUser(request)
 

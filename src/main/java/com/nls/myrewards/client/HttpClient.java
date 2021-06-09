@@ -205,7 +205,6 @@ public class HttpClient {
 
     private URI getUri(String path, Object params) {
         StringBuilder uri = new StringBuilder(configuration.getEndpoint())
-                .append("/")
                 .append(path);
 
         if (params != null) {

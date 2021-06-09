@@ -50,7 +50,7 @@ class SuboptimalBehaviourIntegrationSpec extends BaseIntegrationSpec {
                 .withTitle("Lord")
                 .withFirstname("Higgledy")
                 .withLastname("Piggledy")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withUserGroupId(group.id)
         MyRewardsUser user = client.createUser(request)
 
@@ -95,7 +95,7 @@ class SuboptimalBehaviourIntegrationSpec extends BaseIntegrationSpec {
                 .withEmail(email1)
                 .withFirstname("Quigley")
                 .withLastname("Aaron")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withUserGroupId(testingRootGroup.id)
         MyRewardsUser user = client.createUser(request)
 
@@ -118,7 +118,7 @@ class SuboptimalBehaviourIntegrationSpec extends BaseIntegrationSpec {
                 .withMobile(mobile)
                 .withFirstname("Quigley")
                 .withLastname("Aaron")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withUserGroupId(testingRootGroup.id)
         MyRewardsUser user = client.createUser(request)
 
@@ -141,7 +141,7 @@ class SuboptimalBehaviourIntegrationSpec extends BaseIntegrationSpec {
                 .withUsername(username)
                 .withFirstname("Quigley")
                 .withLastname("Aaron")
-                .withCompany(testingCompany)
+                .withCompany(testingCompany, testingCompanyIdentifier)
                 .withUserGroupId(testingRootGroup.id)
         MyRewardsUser user = client.createUser(request)
 

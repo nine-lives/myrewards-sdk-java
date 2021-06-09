@@ -337,7 +337,7 @@ public final class MyRewards {
      */
     public MyRewardsUser createUser(MyRewardsUserRequest request) {
         return client.post(
-                "/api/v2/users",
+                "/api/v3/users",
                 request,
                 MyRewardsUser.class);
     }
@@ -352,7 +352,7 @@ public final class MyRewards {
      */
     public MyRewardsUser updateUser(int userId, MyRewardsUserRequest request) {
         return client.patch(
-                String.format("/api/v2/users/%d", userId),
+                String.format("/api/v3/users/%d", userId),
                 request,
                 MyRewardsUser.class);
     }
@@ -397,6 +397,7 @@ public final class MyRewards {
     public MyRewardsCompany getCompany(String identifier) {
         return client.get(
                 "/api/v3/companies/" + URLEncoder.encode(identifier),
+                //"/api/v3/companies/" + identifier,
                 null,
                 MyRewardsCompany.class);
     }
@@ -498,7 +499,7 @@ public final class MyRewards {
      * @return the created values
      */
     public List<MyRewardsCreateAllocatedClaim> createAllocatedClaims(int promotionId, List<MyRewardsCreateAllocatedClaimRequest> request) {
-        return client.post(String.format("api/v2/performance/promotions/%d/allocated_claims", promotionId),
+        return client.post(String.format("/api/v2/performance/promotions/%d/allocated_claims", promotionId),
                 new MyRewardsCreateAllocatedClaimRequest.ListWrapper(request),
                 MyRewardsCreateAllocatedClaim.ListWrapper.class).getAllocatedClaims();
     }
