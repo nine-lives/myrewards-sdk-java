@@ -8,6 +8,7 @@ abstract class BaseIntegrationSpec extends Specification {
     protected static MyRewards client
     private MyRewardsUserGroup testingGroup;
     private String testingCompany;
+    private MyRewardsCompany testingCompanyNew;
 
     def setupSpec() {
         ObjectMapperFactory.setFailOnUnknownProperties(true)
@@ -62,10 +63,12 @@ abstract class BaseIntegrationSpec extends Specification {
         MyRewardsRegistrationQuestionValue value = client.getRegistrationQuestionValue(COMPANY_MAGIC_NUMBER, testSuiteCompany);
         if (value != null) {
             testingCompany = value.name
+            testingCompanyNew = client.getCompany(value.id);
             return testingCompany
         }
 
         testingCompany = client.createRegistrationQuestionValues(COMPANY_MAGIC_NUMBER, testSuiteCompany).name
+        testingCompanyNew = client.getCompany(value.id);
         return testingCompany
     }
 

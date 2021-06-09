@@ -25,7 +25,7 @@ class MyRewardsConfigurationSpec extends Specification {
         config.requestBurstSize == 20
         config.requestsPerSecond == 5
         !config.blockTillRateLimitReset
-        version ==~ /1\.\d+\.\d+/
+        version ==~ /3\.\d+\.\d+/
     }
 
     def "I can set configuration values"() {

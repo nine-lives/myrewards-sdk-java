@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MyRewardsUserRequest {
@@ -13,7 +15,7 @@ public class MyRewardsUserRequest {
     private String title;
     private String firstname;
     private String lastname;
-    private String company;
+    private Object company;
     private String jobTitle;
     @JsonProperty("address_1")
     private String address1;
@@ -41,7 +43,11 @@ public class MyRewardsUserRequest {
         this.title = user.getTitle();
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
-        this.company = user.getCompany();
+        if (user.getCompanyType() == MyRewardsUser.CompanyType.ManagedList) {
+            withCompany(user.getCompany(), user.getCompanyIdentifier());
+        } else {
+            withCompany(user.getCompany());
+        }
         this.jobTitle = user.getJobTitle();
         this.address1 = user.getAddress1();
         this.address2 = user.getAddress2();
@@ -109,11 +115,27 @@ public class MyRewardsUserRequest {
     }
 
     public String getCompany() {
-        return company;
+        return company instanceof Map
+                ? ((Map<String, String>) company).get("name")
+                : (String) company;
+    }
+
+    public String getCompanyIdentifier() {
+        return company instanceof Map
+                ? ((Map<String, String>) company).get("identifier")
+                : null;
     }
 
     public MyRewardsUserRequest withCompany(String company) {
         this.company = company;
+        return this;
+    }
+
+    public MyRewardsUserRequest withCompany(String company, String identifier) {
+        Map<String, String> map = new HashMap<>();
+        map.put("name", company);
+        map.put("identifier", identifier);
+        this.company = map;
         return this;
     }
 
