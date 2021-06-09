@@ -74,6 +74,31 @@ class RegistrationQuestionsIntegrationSpec extends BaseIntegrationSpec {
         result.name == companyName
     }
 
+    def "I can create a new company when I create answer"() {
+        given:
+        String companyName = "Test Company " + UUID.randomUUID().toString()
+
+        when:
+        MyRewardsRegistrationQuestionValue value = client.createRegistrationQuestionValues(COMPANY_MAGIC_NUMBER, companyName)
+
+        then:
+        value.name == companyName;
+
+        when:
+        MyRewardsRegistrationQuestionValue result = client.getRegistrationQuestionValue(COMPANY_MAGIC_NUMBER, value.id)
+
+        then:
+        result.id == value.id
+        result.name == companyName
+
+        when:
+        MyRewardsCompany company = client.getCompany(value.id)
+
+        then:
+        company.id == value.id
+        company.name == companyName
+    }
+
     def "I can't create an answer if the name is not unique"() {
         given:
         String companyName = "Test Company With Duplicate Name " + UUID.randomUUID().toString()

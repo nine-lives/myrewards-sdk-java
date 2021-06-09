@@ -126,6 +126,57 @@ class MyRewardsUserRequestSpec extends Specification {
         result.registrationAnswersAttributes[1].answer == "Alfred"
     }
 
+    def "I can covert a v3 request to a payload"() {
+        given:
+        MyRewardsUserRequest request = new MyRewardsUserRequest()
+                .withUsername("bwayne")
+                .withEmail("bruce@wayneinc.com")
+                .withTitle("Mr")
+                .withFirstname("Bruce")
+                .withLastname("Wayne")
+                .withCompany("Wayne Inc", "wayne-18")
+                .withJobTitle("CEO")
+                .withAddress1("Wayne Manor")
+                .withAddress2("1007 Mountain Drive")
+                .withTown("Gotham")
+                .withPostcode("G1 1BM")
+                .withCounty("New Jersey")
+                .withCountry('United States')
+                .withDateOfBirth(LocalDate.parse("1980-02-19"))
+                .withTelephone("+447876543210")
+                .withMobile("+447765432101")
+                .withTsandcs(true)
+                .withConsented(true)
+                .withMarketingConsented(true)
+                .withUserGroupId(10)
+                .withRegistrationAnswersAttributes([new MyRewardsRegistrationAnswerAttribute(2, "Because I'm Batman")])
+                .addRegistrationAnswersAttribute(new MyRewardsRegistrationAnswerAttribute(16, "Alfred"))
+
+        when:
+        String json = mapper.writeValueAsString(request);
+        Map<String, Object> entity = mapper.readValue(json, new TypeReference<Map<String, Object>>() {});
+
+        then:
+        request.username == 'bwayne'
+        request.email == 'bruce@wayneinc.com'
+        request.company == 'Wayne Inc'
+        request.companyIdentifier == 'wayne-18'
+
+        entity.username == 'bwayne'
+        entity.email == 'bruce@wayneinc.com'
+        entity.company.name == 'Wayne Inc'
+        entity.company.identifier == 'wayne-18'
+
+        when:
+        MyRewardsUserRequest result = mapper.readValue(json, MyRewardsUserRequest)
+
+        then:
+        result.username == 'bwayne'
+        result.email == 'bruce@wayneinc.com'
+        request.company == 'Wayne Inc'
+        request.companyIdentifier == 'wayne-18'
+    }
+
     def "I can copy user values"() {
         given:
         String payload = '''
@@ -195,4 +246,81 @@ class MyRewardsUserRequestSpec extends Specification {
         result.registrationAnswersAttributes[1].registrationQuestionId == 16
         result.registrationAnswersAttributes[1].answer == "Alfred"
     }
+
+    def "I can copy v3 user values"() {
+        given:
+        String payload = '''
+                {
+                  "id": 123,
+                  "username" : "bwayne",
+                  "email" : "bruce@wayneinc.com",
+                  "title" : "Mr",
+                  "firstname" : "Bruce",
+                  "lastname" : "Wayne",
+                  "company": {
+                    "id": 4454,
+                    "name": "Wayne Inc",
+                    "identifier": "wayne-18"
+                  },
+                  "job_title" : "CEO",
+                  "address_1" : "Wayne Manor",
+                  "address_2" : "1007 Mountain Drive",
+                  "town" : "Gotham",
+                  "postcode" : "G1 1BM",
+                  "county" : "New Jersey",
+                  "country" : "United States",
+                  "date_of_birth" : "1980-02-19",
+                  "telephone" : "+447876543210",
+                  "mobile" : "+447765432101",
+                  "tsandcs" : "true",
+                  "consented" : "false",
+                  "marketing_consented" : "true",
+                  "user_group_id" : "10",
+                  "registration_answers_attributes" : [
+                    {
+                      "registration_question_id" : "2",
+                      "answer" : "Because I'm Batman"
+                    },
+                    {
+                      "registration_question_id" : "16",
+                      "answer" : "Alfred"
+                    }
+                  ]
+                }
+       '''
+        MyRewardsUser entity = mapper.readValue(payload, MyRewardsUser)
+
+        when:
+        MyRewardsUserRequest result = new MyRewardsUserRequest(entity)
+
+        then:
+        entity.companyType == MyRewardsUser.CompanyType.ManagedList
+        result.username == 'bwayne'
+        result.email == 'bruce@wayneinc.com'
+        result.title == 'Mr'
+        result.firstname == 'Bruce'
+        result.lastname == 'Wayne'
+        result.company == 'Wayne Inc'
+        result.companyIdentifier == 'wayne-18'
+        result.jobTitle == 'CEO'
+        result.address1 == 'Wayne Manor'
+        result.address2 == '1007 Mountain Drive'
+        result.town == 'Gotham'
+        result.postcode == 'G1 1BM'
+        result.county == 'New Jersey'
+        result.country == 'United States'
+        result.dateOfBirth == LocalDate.parse('1980-02-19');
+        result.telephone == '+447876543210'
+        result.mobile == '+447765432101'
+        result.tsandcs
+        !result.consented
+        result.marketingConsented
+        result.userGroupId == 10
+        result.registrationAnswersAttributes.size() == 2
+        result.registrationAnswersAttributes[0].registrationQuestionId == 2
+        result.registrationAnswersAttributes[0].answer == "Because I'm Batman"
+        result.registrationAnswersAttributes[1].registrationQuestionId == 16
+        result.registrationAnswersAttributes[1].answer == "Alfred"
+    }
+
 }

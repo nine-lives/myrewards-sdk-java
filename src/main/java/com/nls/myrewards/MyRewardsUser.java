@@ -5,15 +5,21 @@ import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MyRewardsUser {
+    public enum CompanyType {
+        FreeText,
+        ManagedList
+    }
+
     private int id;
     private String username;
     private String email;
     private String title;
     private String firstname;
     private String lastname;
-    private String company;
+    private Object company;
     private String jobTitle;
     @JsonProperty("address_1")
     private String address1;
@@ -56,8 +62,26 @@ public class MyRewardsUser {
         return lastname;
     }
 
+    public CompanyType getCompanyType() {
+        return company instanceof String ? CompanyType.FreeText : CompanyType.ManagedList;
+    }
+
     public String getCompany() {
-        return company;
+        return getCompanyType() == CompanyType.FreeText
+                ? company.toString()
+                : ((Map<String, String>) company).get("name");
+    }
+
+    public String getCompanyIdentifier() {
+        return getCompanyType() == CompanyType.FreeText
+                ? null
+                : ((Map<String, String>) company).get("identifier");
+    }
+
+    public Integer getCompanyId() {
+        return getCompanyType() == CompanyType.FreeText
+                ? null
+                : ((Map<String, Integer>) company).get("id");
     }
 
     public String getJobTitle() {

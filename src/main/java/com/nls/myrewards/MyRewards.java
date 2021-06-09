@@ -3,6 +3,8 @@ package com.nls.myrewards;
 import com.nls.myrewards.client.HttpClient;
 import org.apache.http.HttpStatus;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -353,6 +355,60 @@ public final class MyRewards {
                 String.format("/api/v2/users/%d", userId),
                 request,
                 MyRewardsUser.class);
+    }
+
+    /**
+     * This endpoint returns all companies associated to an api keys programme. Results are paginated and return 100
+     * records per page and can be paged through by passing a page query parameter. If no page parameter is passed,
+     * then page 1 with the first 100 records will be returned.
+     *
+     * @return the list of companies
+     */
+    public List<MyRewardsCompany> getCompanies(int page) {
+        return client.get(
+                "/api/v3/companies?page=" + page,
+                null,
+                MyRewardsCompany.LIST_TYPE_REFERENCE);
+    }
+
+    /**
+     * This endpoint returns all companies, paging as necessary
+     *
+     * @return the list of companies
+     */
+    public List<MyRewardsCompany> getCompanies() {
+        List<MyRewardsCompany> companies = new ArrayList<>();
+        for (int  i = 1; true; i++) {
+            List<MyRewardsCompany> page = getCompanies(i);
+            companies.addAll(page);
+
+            if (page.isEmpty() || page.size() < 100) {
+                break;
+            }
+        }
+        return companies;
+    }
+
+    /**
+     * This endpoint returns a specific company associated to an api keys programme.
+     *
+     * @return the company matched by the identifier
+     */
+    public MyRewardsCompany getCompany(String identifier) {
+        return client.get(
+                "/api/v3/companies/" + URLEncoder.encode(identifier),
+                null,
+                MyRewardsCompany.class);
+    }
+
+    /**
+     * This endpoint returns a specific company associated to an api keys programme. This lists all and find the
+     * matching id
+     *
+     * @return the company matched by the identifier
+     */
+    public MyRewardsCompany getCompany(int id) {
+        return getCompanies().stream().filter(o -> o.getId() == id).findAny().orElse(null);
     }
 
     /**

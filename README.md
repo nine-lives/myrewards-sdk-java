@@ -1,4 +1,5 @@
 # My Rewards Client Java SDK
+# My Rewards Client Java SDK
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.9ls/myrewards-java-sdk/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.9ls/myrewards-java-sdk)
 [![Build Status](https://api.travis-ci.com/nine-lives/myrewards-sdk-java.png)](https://travis-ci.com/nine-lives/myrewards-sdk-java)
@@ -20,7 +21,7 @@ in your projects as follows:
 
 ### Gradle/Grails
 ```
-    compile 'com.9ls:myrewards-java-sdk:1.0.0'
+    compile 'com.9ls:myrewards-java-sdk:3.0.0'
 ```
 
 ### Apache Maven
@@ -28,13 +29,13 @@ in your projects as follows:
     <dependency>
         <groupId>com.9ls</groupId>
         <artifactId>myrewards-java-sdk</artifactId>
-        <version>1.0.0</version>
+        <version>3.0.0</version>
     </dependency>
 ```
 
 ### Apache Ivy
 ```
-    <dependency org="com.9ls" name="myrewards-java-sdk" rev="1.0.0" />
+    <dependency org="com.9ls" name="myrewards-java-sdk" rev="3.0.0" />
 ```
 
 ## Custom Configuration
@@ -48,7 +49,7 @@ from the the api key all the other values have defaults.
         .withSecretKey(secretKey)
         .withEndpoint("https://api.my-rewards.co.uk")
         .withMaxConnectionsPerRoute(20)
-        .withUserAgent("myrewards-sdk-java 1.0.0")
+        .withUserAgent("myrewards-sdk-java 3.0.0")
         .withBlockTillRateLimitReset(false)
         .withRequestsPerSecond(5)
         .withRequestBurstSize(20);
