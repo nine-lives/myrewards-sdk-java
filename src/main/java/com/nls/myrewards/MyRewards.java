@@ -443,7 +443,6 @@ public final class MyRewards {
      * This endpoint updates an existing company associated to an api keys programme.
      *
      * @param companyId The ID of the company to delete
-     * @return the created company
      */
     public void deleteCompany(int companyId) {
         client.delete(
