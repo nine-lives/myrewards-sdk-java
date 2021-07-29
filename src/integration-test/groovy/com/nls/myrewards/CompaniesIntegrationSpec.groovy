@@ -41,8 +41,8 @@ class CompaniesIntegrationSpec extends BaseIntegrationSpec {
         List<MyRewardsRegistrationQuestionValue> values = client.getRegistrationQuestionValues(COMPANY_MAGIC_NUMBER)
 
         when:
-        Map<Integer, String> companyMap = companies.collectEntries{[it.id, it.name]}
-        Map<Integer, String> valueMap = values.collectEntries{[it.id, it.name]}
+        Map<Integer, String> companyMap = companies.collectEntries { [it.id, it.name] }
+        Map<Integer, String> valueMap = values.collectEntries { [it.id, it.name] }
 
         then:
         !companyMap.isEmpty()
@@ -136,4 +136,82 @@ class CompaniesIntegrationSpec extends BaseIntegrationSpec {
         company.name == companyName
     }
 
+    def "I can create and delete a company"() {
+        when:
+        String companyName = "test-create-company" + UUID.randomUUID().toString()
+        String companyIdentifier = companyName + "-id"
+
+        MyRewardsCompany company = client.createCompany(new MyRewardsCompanyRequest()
+                .withName(companyName)
+                .withIdentifier(companyIdentifier)
+                .withDisabled(false)
+                .withEarningType(EarningType.company))
+
+        then:
+        company.identifier == companyIdentifier
+        company.name == companyName
+        company.earningType == EarningType.company
+        !company.disabled
+
+        when:
+        MyRewardsCompany result = client.getCompany(companyIdentifier)
+
+        then:
+        result.identifier == companyIdentifier
+        result.name == companyName
+        result.earningType == EarningType.company
+        !result.disabled
+        result.id == company.id
+
+        when:
+        client.deleteCompany(company.id)
+        client.getCompany(companyIdentifier)
+
+        then:
+        MyRewardsServerException e = thrown(MyRewardsServerException)
+        e.statusCode == 404
+    }
+
+    def "I can update and delete a company"() {
+        given:
+        String companyName = "test-update-company" + UUID.randomUUID().toString()
+        String companyIdentifier = companyName + "-id"
+
+        MyRewardsCompany company = client.createCompany(new MyRewardsCompanyRequest()
+                .withName(companyName)
+                .withIdentifier(companyIdentifier)
+                .withDisabled(false)
+                .withEarningType(EarningType.company))
+
+        when:
+        company = client.updateCompany(company.getId(), new MyRewardsCompanyRequest()
+                .withName(companyName + " ALT")
+                .withIdentifier(companyIdentifier + '-alt')
+                .withDisabled(true)
+                .withEarningType(EarningType.individual))
+
+        then:
+        company.identifier == companyIdentifier + '-alt'
+        company.name == companyName + " ALT"
+        company.earningType == EarningType.individual
+        company.disabled
+
+        when:
+        MyRewardsCompany result = client.getCompany(companyIdentifier + '-alt')
+
+        then:
+        result.identifier == companyIdentifier + '-alt'
+        result.name == companyName + " ALT"
+        result.earningType == EarningType.individual
+        result.disabled
+        result.id == company.id
+
+        when:
+        client.deleteCompany(company.id)
+        client.getCompany(companyIdentifier)
+
+        then:
+        MyRewardsServerException e = thrown(MyRewardsServerException)
+        e.statusCode == 404
+    }
 }

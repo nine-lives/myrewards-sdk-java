@@ -31,7 +31,7 @@ class MyRewardsCompanySpec extends Specification {
         entity.name == 'Company B'
         entity.identifier == 'company-b-identifier'
         entity.disabled
-        entity.earningType == 'company'
+        entity.earningType == EarningType.company
         entity.createdAt == DateTime.parse('2021-03-18T02:20:06.000+00:00')
         entity.updatedAt == DateTime.parse('2021-03-20T13:42:17.000+00:00')
     }

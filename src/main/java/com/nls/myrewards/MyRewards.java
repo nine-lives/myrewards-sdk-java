@@ -413,6 +413,46 @@ public final class MyRewards {
     }
 
     /**
+     * This endpoint creates a new company associated to an api keys programme.
+     *
+     * @param request the request
+     * @return the created company
+     */
+    public MyRewardsCompany createCompany(MyRewardsCompanyRequest request) {
+        return client.post(
+                "/api/v3/companies",
+                request,
+                MyRewardsCompany.class);
+    }
+
+    /**
+     * This endpoint updates an existing company associated to an api keys programme.
+     *
+     * @param request the request
+     * @param companyId The ID of the company to update
+     * @return the created company
+     */
+    public MyRewardsCompany updateCompany(int companyId, MyRewardsCompanyRequest request) {
+        return client.patch(
+                String.format("/api/v3/companies/%d", companyId),
+                request,
+                MyRewardsCompany.class);
+    }
+
+    /**
+     * This endpoint updates an existing company associated to an api keys programme.
+     *
+     * @param companyId The ID of the company to delete
+     * @return the created company
+     */
+    public void deleteCompany(int companyId) {
+        client.delete(
+                String.format("/api/v3/companies/%d", companyId),
+                null,
+                String.class);
+    }
+
+    /**
      * An endpoint to fetch a list of permissions for a given user. Returns an array of permissions displaying it's
      * parent permissions group name. This is to help identify different permissions when names are the same across
      * separate groups. It will also display whether the permission is active for the given user and the state of the

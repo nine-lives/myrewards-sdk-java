@@ -12,7 +12,7 @@ public class MyRewardsCompany {
     private String name;
     private String identifier;
     private boolean disabled;
-    private String earningType;
+    private EarningType earningType;
     private DateTime createdAt;
     private DateTime updatedAt;
 
@@ -32,7 +32,7 @@ public class MyRewardsCompany {
         return disabled;
     }
 
-    public String getEarningType() {
+    public EarningType getEarningType() {
         return earningType;
     }
 
