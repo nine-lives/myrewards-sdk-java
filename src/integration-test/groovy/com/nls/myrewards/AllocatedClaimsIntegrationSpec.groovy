@@ -1,5 +1,8 @@
 package com.nls.myrewards
 
+import com.nls.myrewards.client.ObjectMapperFactory
+import org.apache.commons.logging.LogFactory
+import org.apache.commons.logging.impl.SimpleLog
 import org.joda.time.LocalDate
 
 
@@ -22,6 +25,7 @@ class AllocatedClaimsIntegrationSpec extends BaseIntegrationSpec {
                     .withInvoice("TESTINV")
                     //.withProductOrActivityRef('TEST-a9e6e235-58ec-4e48-822d-80b49daa9ea6')]) // 14421
                     .withProductOrActivityRef('10RS003UUK')]).get(0)
+        println(ObjectMapperFactory.make().writeValueAsString(claim))
 
         then:
         claim.id > 0
@@ -34,4 +38,26 @@ class AllocatedClaimsIntegrationSpec extends BaseIntegrationSpec {
         //422: Unprocessable Entity - User Group or Company is not eligible for promotion
 
     }
+
+//    def "I can decline an allocated claim request"() {
+//        when:
+//        client.declineAllocatedClaims(298, 780609, new MyRewardsDeclineAllocatedClaimRequest()
+//            .withReasonForDeclineText("Expired"))
+//
+//        then:
+//        noExceptionThrown()
+//    }
+
+//    def "I can get allocated claims"() {
+//        when:
+//        List<MyRewardsCreateAllocatedClaim> claims = client.getAllocatedClaims(new MyRewardsAllocatedClaimsSearchRequest(298)
+//            .withStatus("pending")
+//            .withCompanyId(21024)
+//            .withDateOfSaleEndDate(LocalDate.now().minusMonths(3)))
+//
+//        then:
+//        println claims.size()
+//        claims.forEach {println(ObjectMapperFactory.make().writeValueAsString(it)) }
+//    }
+
 }

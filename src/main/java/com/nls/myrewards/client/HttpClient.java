@@ -14,6 +14,7 @@ import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
@@ -56,6 +57,11 @@ public class HttpClient {
 
     public <T> T get(String path, Map<String, String> parameters, TypeReference<T> responseType) {
         return executeAndTransform(new HttpGet(getUri(path, parameters)), responseType);
+    }
+
+    public <T> T getWithBody(String path, Object data, Class<T> responseType) {
+        HttpGetWithEntity request = setPayload(new HttpGetWithEntity(getUri(path, null)), data);
+        return executeAndTransform(request, responseType);
     }
 
     public <T> T post(String path, Object data, Class<T> responseType) {
@@ -213,8 +219,23 @@ public class HttpClient {
 
         try {
             return new URI(uri.toString());
+            //return new URI("https://hookb.in/DrrW7w807LsPajxxaKd8");
         } catch (URISyntaxException e) {
             throw new MyRewardsException(e);
+        }
+    }
+
+    private static class HttpGetWithEntity extends HttpEntityEnclosingRequestBase {
+        public static final String METHOD_NAME = "GET";
+
+        HttpGetWithEntity(final URI uri) {
+            super();
+            setURI(uri);
+        }
+
+        @Override
+        public String getMethod() {
+            return METHOD_NAME;
         }
     }
 }

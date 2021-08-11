@@ -530,10 +530,44 @@ public final class MyRewards {
     }
 
     /**
+     * Endpoint to view allocated claims against a specific promotion. Claims can be scoped down via passed
+     * in parameters. Only 100 records are returned at a time.
+     *
+     * @param request the search request
+     * @return the allocated claims
+     */
+    public List<MyRewardsCreateAllocatedClaim> getAllocatedClaims(MyRewardsAllocatedClaimsSearchRequest request) {
+        return client.getWithBody(String.format("/api/v2/performance/promotions/%d/allocated_claims", request.getPromotionId()),
+                request,
+                MyRewardsCreateAllocatedClaim.ListWrapper.class).getAllocatedClaims();
+    }
+
+    /**
+     * Endpoint to view allocated claims against a specific promotion. Paginates until all claims are fetched
+     *
+     * @param request the search request
+     * @return the allocated claims
+     */
+    public List<MyRewardsCreateAllocatedClaim> getAllAllocatedClaims(MyRewardsAllocatedClaimsSearchRequest request) {
+        List<MyRewardsCreateAllocatedClaim> claims = new ArrayList<>();
+        for (int  i = 1; true; i++) {
+
+            List<MyRewardsCreateAllocatedClaim> page = getAllocatedClaims(request.withPage(i));
+            claims.addAll(page);
+
+            if (page.isEmpty() || page.size() < 100) {
+                break;
+            }
+        }
+        return claims;
+    }
+
+    /**
      * Endpoint to create allocated claims against specific promotion. Claims are created by using the
      * data_field names from above as key/value pairs. Your request must include user_group_id or company_id,
      * depending on the promotion configuration.
      *
+     * @param promotionId the ID of the promotion claim is for.
      * @param request the claims to submit
      * @return the created values
      */
@@ -541,6 +575,19 @@ public final class MyRewards {
         return client.post(String.format("/api/v2/performance/promotions/%d/allocated_claims", promotionId),
                 new MyRewardsCreateAllocatedClaimRequest.ListWrapper(request),
                 MyRewardsCreateAllocatedClaim.ListWrapper.class).getAllocatedClaims();
+    }
+
+    /**
+     * Endpoint to decline a given allocated claim.
+     *
+     * @param promotionId the ID of the promotion claim is for.
+     * @param claimId the ID of the claim to decline.
+     * @param request the decline data
+     */
+    public void declineAllocatedClaims(int promotionId, int claimId, MyRewardsDeclineAllocatedClaimRequest request) {
+        client.post(String.format("/api/v2/performance/promotions/%d/allocated_claims/%d/decline", promotionId, claimId),
+                request,
+                String.class);
     }
 
     /**
