@@ -587,7 +587,7 @@ public final class MyRewards {
     public void declineAllocatedClaims(int promotionId, int claimId, MyRewardsDeclineAllocatedClaimRequest request) {
         client.post(String.format("/api/v2/performance/promotions/%d/allocated_claims/%d/decline", promotionId, claimId),
                 request,
-                String.class);
+                Void.class);
     }
 
     /**

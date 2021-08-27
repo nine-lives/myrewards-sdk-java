@@ -97,7 +97,7 @@ public class HttpClient {
         String content = null;
         try {
             content = execute(request);
-            return content == null ? null : objectMapper.readValue(content, responseType);
+            return responseType.equals(Void.class) || content == null ? null : objectMapper.readValue(content, responseType);
         } catch (IOException e) {
             throw throwError(content, e);
         }
