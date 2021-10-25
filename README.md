@@ -21,7 +21,7 @@ in your projects as follows:
 
 ### Gradle/Grails
 ```
-    compile 'com.9ls:myrewards-java-sdk:3.0.3'
+    compile 'com.9ls:myrewards-java-sdk:3.0.4'
 ```
 
 ### Apache Maven
@@ -29,13 +29,13 @@ in your projects as follows:
     <dependency>
         <groupId>com.9ls</groupId>
         <artifactId>myrewards-java-sdk</artifactId>
-        <version>3.0.3</version>
+        <version>3.0.4</version>
     </dependency>
 ```
 
 ### Apache Ivy
 ```
-    <dependency org="com.9ls" name="myrewards-java-sdk" rev="3.0.3" />
+    <dependency org="com.9ls" name="myrewards-java-sdk" rev="3.0.4" />
 ```
 
 ## Custom Configuration
@@ -49,7 +49,7 @@ from the the api key all the other values have defaults.
         .withSecretKey(secretKey)
         .withEndpoint("https://api.my-rewards.co.uk")
         .withMaxConnectionsPerRoute(20)
-        .withUserAgent("myrewards-sdk-java 3.0.3")
+        .withUserAgent("myrewards-sdk-java 3.0.4")
         .withBlockTillRateLimitReset(false)
         .withRequestsPerSecond(5)
         .withRequestBurstSize(20);

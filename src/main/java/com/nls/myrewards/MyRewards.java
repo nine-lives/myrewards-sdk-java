@@ -239,15 +239,16 @@ public final class MyRewards {
     }
 
     /**
-     * Get a user group - this is proxy method that calls getUserGroups under the hood and extracts the user group
-     * with the matching id
+     * Get a user group with the matching id
      *
      * @param id the user group id
      * @return the user group
      */
     public MyRewardsUserGroup getUserGroup(int id) {
-        return getUserGroups().stream().filter(o -> o.getId() == id).findAny()
-                .orElseThrow(() -> new MyRewardsServerException(HttpStatus.SC_NOT_FOUND, "Not Found", new MyRewardsError("User group not found with id " + id)));
+        return client.get(
+                String.format("/api/v2/user_groups/%d", id),
+                null,
+                MyRewardsUserGroup.class);
     }
 
     /**

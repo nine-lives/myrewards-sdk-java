@@ -9,7 +9,7 @@ class UserGroupsIntegrationSpec extends BaseIntegrationSpec {
     def "I can list user groups"() {
         when:
         List<MyRewardsUserGroup> list = client.getUserGroups()
-        list.each { println(ObjectMapperFactory.make().writeValueAsString(it)) }
+        //list.each { println(ObjectMapperFactory.make().writeValueAsString(it)) }
 
         then:
         list.size() >= 4
