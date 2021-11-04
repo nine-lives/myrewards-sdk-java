@@ -32,6 +32,7 @@ public class MyRewardsUser {
     private LocalDate dateOfBirth;
     private String telephone;
     private String mobile;
+    private String chosenLocale;
     private boolean tsandcs;
     private Integer userGroupId;
     private boolean consented;
@@ -122,6 +123,10 @@ public class MyRewardsUser {
 
     public String getMobile() {
         return mobile;
+    }
+
+    public String getChosenLocale() {
+        return chosenLocale;
     }
 
     public boolean isTsandcs() {

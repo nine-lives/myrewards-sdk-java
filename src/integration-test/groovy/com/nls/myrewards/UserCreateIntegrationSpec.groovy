@@ -149,7 +149,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
         e.message.startsWith('422: Unprocessable Entity')
     }
 
-    def "I can get a user's details by doing an empty update"() {
+    def "I can get a user's details"() {
         when:
         MyRewardsUserRequest request = new MyRewardsUserRequest()
                 .withUsername(getRandomUsername())
@@ -181,8 +181,7 @@ class UserCreateIntegrationSpec extends BaseIntegrationSpec {
         user.id > 0
 
         when:
-        MyRewardsUserRequest getRequest = new MyRewardsUserRequest()
-        MyRewardsUser updateUser = client.updateUser(user.id, getRequest)
+        MyRewardsUser updateUser = client.getUser(user.id)
         println(ObjectMapperFactory.make().writeValueAsString(updateUser))
 
         then:

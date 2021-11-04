@@ -28,6 +28,7 @@ public class MyRewardsUserRequest {
     private LocalDate dateOfBirth;
     private String telephone;
     private String mobile;
+    private String chosenLocale;
     private Boolean tsandcs;
     private Integer userGroupId;
     private Boolean consented;
@@ -58,6 +59,7 @@ public class MyRewardsUserRequest {
         this.dateOfBirth = user.getDateOfBirth();
         this.telephone = user.getTelephone();
         this.mobile = user.getMobile();
+        this.chosenLocale = user.getChosenLocale();
         this.tsandcs = user.isTsandcs();
         this.userGroupId = user.getUserGroupId();
         this.consented = user.isConsented();
@@ -226,6 +228,15 @@ public class MyRewardsUserRequest {
 
     public MyRewardsUserRequest withMobile(String mobile) {
         this.mobile = mobile;
+        return this;
+    }
+
+    public String getChosenLocale() {
+        return chosenLocale;
+    }
+
+    public MyRewardsUserRequest withChosenLocale(String chosenLocale) {
+        this.chosenLocale = chosenLocale;
         return this;
     }
 

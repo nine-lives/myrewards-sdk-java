@@ -68,15 +68,15 @@ abstract class BaseIntegrationSpec extends Specification {
 
         String testSuiteCompany = "Testing Corp (Test Suite)";
 
-        MyRewardsRegistrationQuestionValue value = client.getRegistrationQuestionValue(COMPANY_MAGIC_NUMBER, testSuiteCompany);
+        MyRewardsCompany value = client.companies.find({it -> it.name == testSuiteCompany});
         if (value != null) {
             testingCompany = value.name
-            testingCompanyNew = client.getCompany(value.id);
+            testingCompanyNew = value
             return testingCompany
         }
 
-        testingCompany = client.createRegistrationQuestionValues(COMPANY_MAGIC_NUMBER, testSuiteCompany).name
-        testingCompanyNew = client.getCompany(value.id);
+        testingCompanyNew = client.createCompany(testSuiteCompany)
+        testingCompany = testingCompanyNew.name
         return testingCompany
     }
 

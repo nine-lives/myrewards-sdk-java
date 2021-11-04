@@ -3,6 +3,7 @@ package com.nls.myrewards;
 public final class MyRewardsRegistrationAnswerAttribute {
     private String registrationQuestionId;
     private String answer;
+    private MyRewardsRegistrationQuestionAttribute question;
 
     private MyRewardsRegistrationAnswerAttribute() {
     }
@@ -18,6 +19,10 @@ public final class MyRewardsRegistrationAnswerAttribute {
 
     public int getRegistrationQuestionId() {
         return Integer.parseInt(registrationQuestionId);
+    }
+
+    public MyRewardsRegistrationQuestionAttribute getQuestion() {
+        return question;
     }
 
     public String getAnswer() {

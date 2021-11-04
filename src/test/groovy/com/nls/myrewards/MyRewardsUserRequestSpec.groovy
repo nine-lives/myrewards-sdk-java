@@ -28,6 +28,7 @@ class MyRewardsUserRequestSpec extends Specification {
                 .withDateOfBirth(LocalDate.parse("1980-02-19"))
                 .withTelephone("+447876543210")
                 .withMobile("+447765432101")
+                .withChosenLocale("en")
                 .withTsandcs(true)
                 .withConsented(true)
                 .withMarketingConsented(true)
@@ -58,6 +59,7 @@ class MyRewardsUserRequestSpec extends Specification {
         request.dateOfBirth == LocalDate.parse('1980-02-19');
         request.telephone == '+447876543210'
         request.mobile == '+447765432101'
+        request.chosenLocale == 'en'
         request.tsandcs
         request.consented
         request.marketingConsented
@@ -84,6 +86,7 @@ class MyRewardsUserRequestSpec extends Specification {
         entity.date_of_birth == '1980-02-19'
         entity.telephone == '+447876543210'
         entity.mobile == '+447765432101'
+        entity.chosen_locale == 'en'
         entity.tsandcs == true
         entity.consented == true
         entity.marketing_consented == true
@@ -115,6 +118,7 @@ class MyRewardsUserRequestSpec extends Specification {
         result.dateOfBirth == LocalDate.parse('1980-02-19');
         result.telephone == '+447876543210'
         result.mobile == '+447765432101'
+        result.chosenLocale == 'en'
         result.tsandcs
         result.consented
         result.marketingConsented
@@ -145,6 +149,7 @@ class MyRewardsUserRequestSpec extends Specification {
                 .withDateOfBirth(LocalDate.parse("1980-02-19"))
                 .withTelephone("+447876543210")
                 .withMobile("+447765432101")
+                .withChosenLocale('en')
                 .withTsandcs(true)
                 .withConsented(true)
                 .withMarketingConsented(true)
@@ -198,6 +203,7 @@ class MyRewardsUserRequestSpec extends Specification {
                   "date_of_birth" : "1980-02-19",
                   "telephone" : "+447876543210",
                   "mobile" : "+447765432101",
+                  "chosen_locale" : "en",
                   "tsandcs" : "true",
                   "consented" : "false",
                   "marketing_consented" : "true",
@@ -236,6 +242,7 @@ class MyRewardsUserRequestSpec extends Specification {
         result.dateOfBirth == LocalDate.parse('1980-02-19');
         result.telephone == '+447876543210'
         result.mobile == '+447765432101'
+        result.chosenLocale == 'en'
         result.tsandcs
         !result.consented
         result.marketingConsented
@@ -272,6 +279,7 @@ class MyRewardsUserRequestSpec extends Specification {
                   "date_of_birth" : "1980-02-19",
                   "telephone" : "+447876543210",
                   "mobile" : "+447765432101",
+                  "chosen_locale" : "en",
                   "tsandcs" : "true",
                   "consented" : "false",
                   "marketing_consented" : "true",
@@ -312,6 +320,7 @@ class MyRewardsUserRequestSpec extends Specification {
         result.dateOfBirth == LocalDate.parse('1980-02-19');
         result.telephone == '+447876543210'
         result.mobile == '+447765432101'
+        result.chosenLocale == "en"
         result.tsandcs
         !result.consented
         result.marketingConsented

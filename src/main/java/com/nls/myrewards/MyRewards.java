@@ -1,7 +1,6 @@
 package com.nls.myrewards;
 
 import com.nls.myrewards.client.HttpClient;
-import org.apache.http.HttpStatus;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -309,7 +308,10 @@ public final class MyRewards {
      * @return the user
      */
     public MyRewardsUser getUser(int userId) {
-        return updateUser(userId, new MyRewardsUserRequest());
+        return client.get(
+                "/api/v3/users/" + userId,
+                null,
+                MyRewardsUser.class);
     }
 
 

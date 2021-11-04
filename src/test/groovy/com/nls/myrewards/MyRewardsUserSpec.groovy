@@ -29,6 +29,7 @@ class MyRewardsUserSpec extends Specification {
                   "date_of_birth" : "1980-02-19",
                   "telephone" : "+447876543210",
                   "mobile" : "+447765432101",
+                  "chosen_locale": "en",
                   "tsandcs" : "true",
                   "consented" : "false",
                   "marketing_consented" : "true",
@@ -67,6 +68,7 @@ class MyRewardsUserSpec extends Specification {
         entity.dateOfBirth == LocalDate.parse('1980-02-19');
         entity.telephone == '+447876543210'
         entity.mobile == '+447765432101'
+        entity.chosenLocale == "en"
         entity.tsandcs
         !entity.consented
         entity.marketingConsented
@@ -103,15 +105,24 @@ class MyRewardsUserSpec extends Specification {
               "date_of_birth" : "1980-02-19",
               "telephone" : "+447876543210",
               "mobile" : "+447765432101",
+              "chosen_locale": "en",
               "tsandcs" : "true",
               "user_group_id" : "10",
               "registration_answers_attributes" : [
                 {
                   "registration_question_id" : "2",
+                  "question": {
+                    "user_locale": "Pourquoi?",
+                    "stack_locale": "Why?"
+                  },
                   "answer" : "Because I'm Batman"
                 },
                 {
                   "registration_question_id" : "16",
+                  "question": {
+                    "user_locale": "Butler Name",
+                    "stack_locale": "Butler Name"
+                  },
                   "answer" : "Alfred"
                 }
               ]
@@ -141,14 +152,19 @@ class MyRewardsUserSpec extends Specification {
         entity.dateOfBirth == LocalDate.parse('1980-02-19');
         entity.telephone == '+447876543210'
         entity.mobile == '+447765432101'
+        entity.chosenLocale == 'en'
         entity.tsandcs
         !entity.consented
         !entity.marketingConsented
         entity.userGroupId == 10
         entity.registrationAnswersAttributes.size() == 2
         entity.registrationAnswersAttributes[0].registrationQuestionId == 2
+        entity.registrationAnswersAttributes[0].question.userLocale == 'Pourquoi?'
+        entity.registrationAnswersAttributes[0].question.stackLocale == 'Why?'
         entity.registrationAnswersAttributes[0].answer == "Because I'm Batman"
         entity.registrationAnswersAttributes[1].registrationQuestionId == 16
+        entity.registrationAnswersAttributes[1].question.userLocale == 'Butler Name'
+        entity.registrationAnswersAttributes[1].question.stackLocale == 'Butler Name'
         entity.registrationAnswersAttributes[1].answer == "Alfred"
     }
 
