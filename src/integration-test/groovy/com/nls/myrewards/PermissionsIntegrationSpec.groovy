@@ -68,12 +68,12 @@ class PermissionsIntegrationSpec extends BaseIntegrationSpec {
         performance.hasPermission('Local reporting')
         performance.hasPermission('Global reporting')
 
-        when:
-        MyRewardsPermissionGroup program = resources.getGroup('Program in a Box')
-
-        then:
-        program.permissions.size() == 1
-        program.name == 'Program in a Box'
-        program.hasPermission('Creator')
+//        when:
+//        MyRewardsPermissionGroup program = resources.getGroup('Program in a Box')
+//
+//        then:
+//        program.permissions.size() == 1
+//        program.name == 'Program in a Box'
+//        program.hasPermission('Creator')
     }
 }

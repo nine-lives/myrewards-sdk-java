@@ -2,6 +2,7 @@ package com.nls.myrewards
 
 import com.nls.myrewards.client.ObjectMapperFactory
 import org.joda.time.LocalDate
+import spock.lang.Ignore
 
 class CompaniesIntegrationSpec extends BaseIntegrationSpec {
 
@@ -35,6 +36,7 @@ class CompaniesIntegrationSpec extends BaseIntegrationSpec {
         list.size() > 100
     }
 
+   @Ignore
     def "I can see that the mappings for registration questions to company ids are the same"() {
         given:
         List<MyRewardsCompany> companies = client.companies
@@ -50,6 +52,7 @@ class CompaniesIntegrationSpec extends BaseIntegrationSpec {
         companyMap == valueMap
     }
 
+    @Ignore
     def "I can fetch a specific company if it doesn't need encoding"() {
         given:
         String companyName = "test-fetch-no-encoding" + UUID.randomUUID().toString()
