@@ -1,8 +1,7 @@
 # My Rewards Client Java SDK
-# My Rewards Client Java SDK
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.9ls/myrewards-java-sdk/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.9ls/myrewards-java-sdk)
-[![Build Status](https://api.travis-ci.com/nine-lives/myrewards-sdk-java.png)](https://travis-ci.com/nine-lives/myrewards-sdk-java)
+[![Build Status](https://api.travis-ci.com/nine-lives/myrewards-sdk-java.png)](https://app.travis-ci.com/github/nine-lives/myrewards-sdk-java)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/91e4e97db854401d878fcf1670dfed25)](https://www.codacy.com/gh/nine-lives/myrewards-sdk-java/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nine-lives/myrewards-sdk-java&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/91e4e97db854401d878fcf1670dfed25)](https://www.codacy.com/gh/nine-lives/myrewards-sdk-java/dashboard?utm_source=github.com&utm_medium=referral&utm_content=nine-lives/myrewards-sdk-java&utm_campaign=Badge_Coverage)
 
