@@ -1,8 +1,6 @@
 package com.nls.myrewards
 
 import com.nls.myrewards.client.ObjectMapperFactory
-import org.apache.commons.logging.LogFactory
-import org.apache.commons.logging.impl.SimpleLog
 import org.joda.time.LocalDate
 
 
@@ -19,10 +17,10 @@ class AllocatedClaimsIntegrationSpec extends BaseIntegrationSpec {
 
     def "I can create an allocated claim"() {
         when:
-        MyRewardsCreateAllocatedClaim claim = client.createAllocatedClaims(298, [
+        MyRewardsAllocatedClaim claim = client.createAllocatedClaims(298, [
                 new MyRewardsCreateAllocatedClaimRequest(LocalDate.parse('2021-02-01'), 101)
                     .withCompanyId(19457)
-                    .withInvoice("TESTINV")
+                    .withCustomField("invoice", "TESTINV")
                     //.withProductOrActivityRef('TEST-a9e6e235-58ec-4e48-822d-80b49daa9ea6')]) // 14421
                     .withProductOrActivityRef('10RS003UUK')]).get(0)
         println(ObjectMapperFactory.make().writeValueAsString(claim))
@@ -31,7 +29,7 @@ class AllocatedClaimsIntegrationSpec extends BaseIntegrationSpec {
         claim.id > 0
         claim.saleDate == LocalDate.parse('2021-02-01')
         claim.productOrActivityRef == '10RS003UUK'
-        claim.invoice == 'TESTINV'
+        claim.customFields.invoice == 'TESTINV'
 
         //422: Unprocessable Entity - Invoice Please complete this field
         //404: Not Found - No reward points found for product ref and date supplied

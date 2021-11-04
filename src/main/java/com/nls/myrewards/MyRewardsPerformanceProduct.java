@@ -42,19 +42,4 @@ public class MyRewardsPerformanceProduct {
     public String getDescription() {
         return description;
     }
-
-    public static class ListWrapper {
-        private List<MyRewardsPerformanceProduct> performanceProducts;
-
-        ListWrapper() {
-        }
-
-        ListWrapper(List<MyRewardsPerformanceProduct> performanceProducts) {
-            this.performanceProducts = performanceProducts;
-        }
-
-        public List<MyRewardsPerformanceProduct> getPerformanceProducts() {
-            return performanceProducts;
-        }
-    }
 }

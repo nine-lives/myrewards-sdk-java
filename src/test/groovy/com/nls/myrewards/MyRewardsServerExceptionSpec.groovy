@@ -15,5 +15,6 @@ class MyRewardsServerExceptionSpec extends Specification {
         e.statusCode == 401
         e.statusMessage == 'Unauthorised'
         e.error.message == 'error_message'
+        e.errorMessage == 'error_message'
     }
 }

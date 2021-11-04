@@ -45,4 +45,15 @@ class MyRewardsPermissionStateSpec extends Specification {
         "Always Deny"        | MyRewardsPermissionState.AlwaysDeny
         ""                   | null
     }
+
+    def "I can get an error for an invalid value"() {
+        when:
+        MyRewardsPermissionState state = MyRewardsPermissionState.fromValue("none")
+
+        then:
+        IllegalArgumentException exception = thrown(IllegalArgumentException)
+        exception.message == 'Value not found for none'
+    }
+
+
 }

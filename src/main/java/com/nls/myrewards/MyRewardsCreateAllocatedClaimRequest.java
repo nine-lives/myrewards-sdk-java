@@ -1,17 +1,30 @@
 package com.nls.myrewards;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import org.joda.time.LocalDate;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyRewardsCreateAllocatedClaimRequest {
     private Integer promotionId;
     private LocalDate saleDate;
     private String productOrActivityRef;
-    private String invoice;
     private int quantity;
     private Integer userGroupId;
     private Integer companyId;
+    private String companyIdentifier;
+
+    @JsonAnyGetter
+    @JsonAnySetter
+    private Map<String, Object> customFields = new HashMap<>();
+
+    protected MyRewardsCreateAllocatedClaimRequest() {
+
+    }
 
     public MyRewardsCreateAllocatedClaimRequest(LocalDate saleDate, int quantity) {
         this.saleDate = saleDate;
@@ -33,15 +46,6 @@ public class MyRewardsCreateAllocatedClaimRequest {
 
     public MyRewardsCreateAllocatedClaimRequest withSaleDate(LocalDate saleDate) {
         this.saleDate = saleDate;
-        return this;
-    }
-
-    public String getInvoice() {
-        return invoice;
-    }
-
-    public MyRewardsCreateAllocatedClaimRequest withInvoice(String invoice) {
-        this.invoice = invoice;
         return this;
     }
 
@@ -78,6 +82,33 @@ public class MyRewardsCreateAllocatedClaimRequest {
 
     public MyRewardsCreateAllocatedClaimRequest withCompanyId(Integer companyId) {
         this.companyId = companyId;
+        return this;
+    }
+
+    public String getCompanyIdentifier() {
+        return companyIdentifier;
+    }
+
+    public MyRewardsCreateAllocatedClaimRequest withCompanyIdentifier(String companyIdentifier) {
+        this.companyIdentifier = companyIdentifier;
+        return this;
+    }
+
+    public Map<String, Object> getCustomFields() {
+        return Collections.unmodifiableMap(customFields);
+    }
+
+    public Object getCustomField(String field) {
+        return customFields.get(field);
+    }
+
+    public MyRewardsCreateAllocatedClaimRequest withCustomField(String field, Object value) {
+        customFields.put(field, value);
+        return this;
+    }
+
+    public MyRewardsCreateAllocatedClaimRequest removeCustomField(String field) {
+        customFields.remove(field);
         return this;
     }
 

@@ -539,10 +539,10 @@ public final class MyRewards {
      * @param request the search request
      * @return the allocated claims
      */
-    public List<MyRewardsCreateAllocatedClaim> getAllocatedClaims(MyRewardsAllocatedClaimsSearchRequest request) {
+    public List<MyRewardsAllocatedClaim> getAllocatedClaims(MyRewardsAllocatedClaimsSearchRequest request) {
         return client.getWithBody(String.format("/api/v2/performance/promotions/%d/allocated_claims", request.getPromotionId()),
                 request,
-                MyRewardsCreateAllocatedClaim.ListWrapper.class).getAllocatedClaims();
+                MyRewardsAllocatedClaim.ListWrapper.class).getAllocatedClaims();
     }
 
     /**
@@ -551,11 +551,11 @@ public final class MyRewards {
      * @param request the search request
      * @return the allocated claims
      */
-    public List<MyRewardsCreateAllocatedClaim> getAllAllocatedClaims(MyRewardsAllocatedClaimsSearchRequest request) {
-        List<MyRewardsCreateAllocatedClaim> claims = new ArrayList<>();
+    public List<MyRewardsAllocatedClaim> getAllAllocatedClaims(MyRewardsAllocatedClaimsSearchRequest request) {
+        List<MyRewardsAllocatedClaim> claims = new ArrayList<>();
         for (int  i = 1; true; i++) {
 
-            List<MyRewardsCreateAllocatedClaim> page = getAllocatedClaims(request.withPage(i));
+            List<MyRewardsAllocatedClaim> page = getAllocatedClaims(request.withPage(i));
             claims.addAll(page);
 
             if (page.isEmpty() || page.size() < 100) {
@@ -574,10 +574,10 @@ public final class MyRewards {
      * @param request the claims to submit
      * @return the created values
      */
-    public List<MyRewardsCreateAllocatedClaim> createAllocatedClaims(int promotionId, List<MyRewardsCreateAllocatedClaimRequest> request) {
+    public List<MyRewardsAllocatedClaim> createAllocatedClaims(int promotionId, List<MyRewardsCreateAllocatedClaimRequest> request) {
         return client.post(String.format("/api/v2/performance/promotions/%d/allocated_claims", promotionId),
                 new MyRewardsCreateAllocatedClaimRequest.ListWrapper(request),
-                MyRewardsCreateAllocatedClaim.ListWrapper.class).getAllocatedClaims();
+                MyRewardsAllocatedClaim.ListWrapper.class).getAllocatedClaims();
     }
 
     /**

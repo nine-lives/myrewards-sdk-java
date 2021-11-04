@@ -14,6 +14,9 @@ public class MyRewardsAllocatedClaimsSearchRequest {
     private LocalDate dateOfSaleEndDate;
     private int page = 1;
 
+    protected MyRewardsAllocatedClaimsSearchRequest() {
+    }
+
     public MyRewardsAllocatedClaimsSearchRequest(int promotionId) {
         this.promotionId = promotionId;
     }

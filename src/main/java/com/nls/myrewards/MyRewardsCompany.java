@@ -43,17 +43,4 @@ public class MyRewardsCompany {
     public DateTime getUpdatedAt() {
         return updatedAt;
     }
-
-    @Override
-    public String toString() {
-        return "MyRewardsCompany{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", identifier='" + identifier + '\'' +
-                ", disabled=" + disabled +
-                ", earningType='" + earningType + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }

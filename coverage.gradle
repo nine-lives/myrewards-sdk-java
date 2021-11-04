@@ -47,7 +47,6 @@ jacocoTestReport {
                 'class'      : percentage(counters.find { it.'@type'.equals('CLASS') })
         ]
 
-
         def failures = []
         metrics.each {
             def limit = limits[it.key]
@@ -55,9 +54,6 @@ jacocoTestReport {
                 failures.add("- ${it.key} coverage rate is: ${it.value}%, minimum is ${limit}%")
             }
         }
-
-        codacyTestReport(results)
-
 
         if (failures) {
             logger.quiet("------------------ Code Coverage Failed -----------------------")
@@ -74,40 +70,6 @@ jacocoTestReport {
             }
         }
     }
-}
-
-def codacyPercentage(Node node) {
-    def covered = node.'@covered' as Double
-    def missed = node.'@missed' as Double
-    (((covered / (covered + missed)) * 100).round(2)) as Integer
-}
-
-def codacyTestReport(Node report) {
-    def codacy = [
-            language: 'Java',
-            total: codacyPercentage(report.counter.find { it.'@type'.equals('LINE') }),
-            fileReports: codacyFileReports(report.package)]
-
-    file("${jacoco.reportsDir}/test/codacy-coverage-report.json").write(prettyPrint(toJson(codacy)))
-    logger.quiet("------------------ Generated Codacy Coverage Report -------------------")
-}
-
-def codacyFileReports(List<Node> packages) {
-    packages.collectMany { packageNode ->
-        String packageName = packageNode.'@name'
-        packageNode.sourcefile.collect { sourceNode ->
-            [
-                    filename: packageName + '/' + sourceNode.'@name',
-                    total: codacyPercentage(sourceNode.counter.find { it.'@type'.equals('LINE') }),
-                    coverage: codacyLineReports(sourceNode.line)]
-        }
-    }
-}
-
-def codacyLineReports(List<Node> lines) {
-    lines
-            .findAll { (it.'@ci' as Integer) > 0 }
-            .collectEntries { [(it.'@nr'): 1] }
 }
 
 check.dependsOn jacocoTestReport
